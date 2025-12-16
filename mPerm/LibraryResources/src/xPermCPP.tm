@@ -1,6 +1,6 @@
 /* 2020.12.10(xPermML)  by dhpark */
 /* 2025.09.06(xPermCPP) by dhpark */
-/* 2025.10.02(xPermCPP) by dhpark */
+/* 2025.12.16(xPermCPP) by dhpark */
 /**********************************************************************
  * xPermCPP.tm to link the xPermCPP.cpp code                          *
  **********************************************************************/
@@ -41,26 +41,26 @@ static void arr2gs(gs_t& GS, int *arr, size_t n) {
 /**********************************************************************/
 :Begin:
 :Function:      ML_canonical_perm
-:Pattern:       mPerm`Private`MLCanonicalPerm[ mPerm`Private`perm_List,
-                                               mPerm`Private`n_Integer,
-                                               mPerm`Private`base_List,
-                                               mPerm`Private`GS_List,
-                                               mPerm`Private`freeps_List,
-                                               mPerm`Private`vds_List,
-                                               mPerm`Private`dummies_List,
-                                               mPerm`Private`mQ_List,
-                                               mPerm`Private`vrs_List,
-                                               mPerm`Private`repes_List ]
-:Arguments:     { mPerm`Private`perm,
-                  mPerm`Private`n,
-                  mPerm`Private`base,
-                  mPerm`Private`GS,
-                  mPerm`Private`freeps,
-                  mPerm`Private`vds,
-                  mPerm`Private`dummies,
-                  mPerm`Private`mQ,
-                  mPerm`Private`vrs,
-                  mPerm`Private`repes }
+:Pattern:       mGRG`mPerm`Private`MLCanonicalPerm[ mGRG`mPerm`Private`perm_List,
+                                                    mGRG`mPerm`Private`n_Integer,
+                                                    mGRG`mPerm`Private`base_List,
+                                                    mGRG`mPerm`Private`GS_List,
+                                                    mGRG`mPerm`Private`freeps_List,
+                                                    mGRG`mPerm`Private`vds_List,
+                                                    mGRG`mPerm`Private`dummies_List,
+                                                    mGRG`mPerm`Private`mQ_List,
+                                                    mGRG`mPerm`Private`vrs_List,
+                                                    mGRG`mPerm`Private`repes_List ]
+:Arguments:     { mGRG`mPerm`Private`perm,
+                  mGRG`mPerm`Private`n,
+                  mGRG`mPerm`Private`base,
+                  mGRG`mPerm`Private`GS,
+                  mGRG`mPerm`Private`freeps,
+                  mGRG`mPerm`Private`vds,
+                  mGRG`mPerm`Private`dummies,
+                  mGRG`mPerm`Private`mQ,
+                  mGRG`mPerm`Private`vrs,
+                  mGRG`mPerm`Private`repes }
 :ArgumentTypes: { IntegerList,
                   Integer,
                   IntegerList,
@@ -118,9 +118,9 @@ void ML_canonical_perm(int *arrPERM,    long p_n,
 /**********************************************************************/
 :Begin:
 :Function:      ML_MakePermGroup
-:Pattern:       mPerm`Private`MLMakePermGroup[ mPerm`Private`arr_List,
-                                               mPerm`Private`n_Integer ]
-:Arguments:     {mPerm`Private`arr, mPerm`Private`n}
+:Pattern:       mGRG`mPerm`Private`MLMakePermGroup[ mGRG`mPerm`Private`arr_List,
+                                                    mGRG`mPerm`Private`n_Integer ]
+:Arguments:     {mGRG`mPerm`Private`arr, mGRG`mPerm`Private`n}
 :ArgumentTypes: {IntegerList, Integer}
 :ReturnType:    Manual
 :End:

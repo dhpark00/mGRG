@@ -4,7 +4,7 @@
 GXX = /opt/homebrew/bin/g++-15
 
 # my personal dir of Wolfram Engine
-MY_MMA_DIR = /Users/dhpark/Dropbox/mma
+#MY_MMA_DIR = /Users/dhpark/Dropbox/mma
 
 # Set the paths according to your MathLink Developer Kit location.
 MLINKDIR = /Applications/Mathematica.app/Contents/SystemFiles/Links/MathLink/DeveloperKit
@@ -17,10 +17,10 @@ MCC = ${CADDSDIR}/mcc
 
 INCLUDES = -I${CADDSDIR}
 
-all: xPermCPP64.mac
+all: xPermCPP64.mac-arm
 
-xPermCPP64.mac: xPermCPP64tm.o
-	${GXX} -O2 ${INCLUDES} ${MLLIBS} xPermCPP64tm.o -o xPermCPP64.mac
+xPermCPP64.mac-arm: xPermCPP64tm.o
+	${GXX} -O2 ${INCLUDES} ${MLLIBS} xPermCPP64tm.o -o xPermCPP64.mac-arm
 
 xPermCPP64tm.o: xPermCPP.tm
 	${MPREP} xPermCPP.tm -o xPermCPP64tm.cpp
