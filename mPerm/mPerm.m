@@ -1,11 +1,11 @@
 (* :Title: mPerm.m *)
-(* :Context: mPerm` *)
+(* :Context: mGRG`mPerm` *)
 (* :Author: Park, Dal-Ho *)
 (* :Summary: Manipulating signed permutations *)
 (* :Package Version: 2025.12 *)
 (* :Mathematica Version: 9.0+ *)
 
-BeginPackage["mPerm`"]
+BeginPackage["mGRG`mPerm`"]
 
 (******* Usage messages for the exported symbols and functions ******)
 
@@ -187,11 +187,21 @@ CanonicalPerm[s_. * imag_Imag,        len_, gs_GenSet, frees_List, sets:{(_Dummy
 
 (********************************************)
 
+$MyDevDirectory =
+    With [{version = System`$Version},
+        Which [
+            StringMatchQ[version, "*Windows*"], "c:/Dropbox/mma/mGRG",
+            StringMatchQ[version, "*Linux*"],   "/home/dhpark/Dropbox/mma/mGRG",
+            StringMatchQ[version, "*Mac*"],     "/Users/dhpark/Dropbox/mma/mGRG"
+        ]
+    ]
+
 $mPermDirectory :=
     With[{lst = FileNames["mPerm",
-                          StringJoin[#, "/Applications"]& /@ {$UserBaseDirectory,
-                                                              $BaseDirectory,
-                                                              $InstallationDirectory <> "/AddOns"}]},
+                          Join[{$MyDevDirectory},
+                               StringJoin[#, "/Applications/mGRG"]& /@ {$UserBaseDirectory,
+                                                                        $BaseDirectory,
+                                                                        $InstallationDirectory <> "/AddOns"}]]},
         If[lst =!= {}, First[lst], {}]
     ]
 
@@ -228,7 +238,7 @@ fromImagList[imag_List, len_Integer] := {PermutationCycles @ Drop[imag, -2],
                                          If [OnPoints[len+1, Imag @@ imag] === len+1, 1, -1]}
 
 linkCanonicalPerm[perm_, len_Integer, sgs_, frees_List, sets_, opts___] :=
-    With[{vb = Verbose /. {opts} /. Options[CanonicalPerm], callF = mPerm`Private`MLCanonicalPerm},
+    With[{vb = Verbose /. {opts} /. Options[CanonicalPerm], callF = mGRG`mPerm`Private`MLCanonicalPerm},
         If [vb,
             Print["Calling 'MLCanonicalPerm' with the following arguments:"];
             Print["1st: perm = ", toImagList[perm, len]];
@@ -276,9 +286,9 @@ linkCanonicalPerm[perm_, len_Integer, sgs_, frees_List, sets_, opts___] :=
         transpose[{}] := {{}, {}}
         transpose[x_] := Transpose[x]
 
-linkMakePermGroup[GS_GenSet, len_Integer] := (
+linkMakePermGroup[gs_GenSet, len_Integer] := (
         If [xpermConnect[] =!= False,
-            With[{result = mPerm`Private`MLMakePermGroup[toImagList[GS, len], len+2]},
+            With[{result = mGRG`mPerm`Private`MLMakePermGroup[toImagList[gs, len], len+2]},
                 fromImagList[#, len]& /@ Partition[result, len + 2]
             ],
         (* else *)
