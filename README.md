@@ -22,6 +22,6 @@ Symbolic 텐서 연산
 
    (2) Paclet 폴더 설정: Mathematica 노트북에서 PacletDirectoryLoad[".../로컬 폴더/mGRG"]
 
-   (3) 패키지 로드: Mathematica에서 "<< mGRG``STensor``" 또는 "<< mGRG``Einstein``"
+   (3) 패키지 로드: Mathematica에서 "<< mGRG\`STensor\`" 또는 "<< mGRG\`Einstein\`"
 
 3. PacletInstall 방법은 준비 중...
