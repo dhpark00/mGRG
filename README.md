@@ -27,7 +27,7 @@ Symbolic 텐서 연산
 - 패키지 로드: Mathematica에서
    
       << mGRG\`STensor\`
-또는
+  또는
 
       << mGRG\`Einstein\`
 
