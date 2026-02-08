@@ -334,7 +334,7 @@ DegreeForm[___]              := 0
 ZeroDegreeQ[fName_Symbol]     := DegreeForm[fName]       === 0 /; DiffFormQ[fName]
 ZeroDegreeQ[fName_[args___]]  := DegreeForm[fName[args]] === 0 /; DiffFormQ[fName]
 ZeroDegreeQ[XD[_]]            := False
-ZeroDegreeQ[XP[__]]           := False  (* TODO(확인 필요): label args is required!! Is it a BUG? *)
+ZeroDegreeQ[XP[__]]           := False
 ZeroDegreeQ[LD[_, expr_]]     := ZeroDegreeQ[expr]
 ZeroDegreeQ[IP[_, expr_]]     := DegreeForm[expr] === 1
 ZeroDegreeQ[HodgeStar[expr_]] := DegreeForm[expr] === GetDimension[DefaultKind]

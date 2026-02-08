@@ -94,7 +94,7 @@ VD[t_[i1___], (t_?IndexedOperandQ)[i2___], _,     ___Rule] := (
 VD[t1_[___], (t2_?IndexedTensorQ)[___], _, opts___Rule] := 0 /; t1 =!= t2 && MemberQ[IndependentVD /. {opts} /. Options[VD], t2]
 
 (* integration by parts *)
-(* TODO: 경우에 따라서 total derivatives가 중요할 수도 있으니 옵션으로 그 항을 저장/출력 가능하게 코딩 *)
+(* TODO: 경우에 따라서 total derivatives가 중요할 수도 있음. 옵션으로 그 항을 저장/출력 가능하게 코딩 *)
 VD[t_, (pd_Symbol?IndexedOperatorQ)[ind_, expr_], rest_, opts___Rule] :=
     -VD[t, expr, pd[ind, rest], opts] /; (ByPartsVD /. {opts} /. Options[VD]) && MemberQ[BD /. {opts} /. Options[VD], pd]
 

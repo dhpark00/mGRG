@@ -1254,8 +1254,7 @@ indicesOf[___]                                    := {}
                                 indexL
                             ]},
 
-                        (* NB: When DiffFormQ[oName], returns only the indices in the indexed-form: Omega[lmu, lnu, la, ub] => {la, lb} *)
-                        (* TODO: check when DiffFormQ[oName] *)
+                        (* TODO: check throughly when DiffFormQ[oName] *)
                         Select[newIdxL, ValidIndexQ[#, KindOf[oName, First @ Flatten @ Position[{indices}, #]]]&]
                     ]
                 ]
