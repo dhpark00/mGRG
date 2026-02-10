@@ -124,50 +124,52 @@ markPairs[tTermL_List, hOptL_List, cOptL_List, withCheck_:True] := (
         With[{pairL = TakePairs @ FindIndices[Times @@ tTermL, Sequence @@ hOptL]},  (* contracted pairs in the format {dn, up} in tTerm *)
             If [pairL === {}, Return[tTermL]];
 
-            Module[{rcL = tTermL},
-                Do [
+            With[{rules =
+                Flatten @ Table[
                     With[{dnPos = First @ Position[tTermL, pairL[[i,1]]],
                           upPos = First @ Position[tTermL, pairL[[i,2]]],
-                          uniqSym = Unique["m"],
                           kind = IndexToKind @ pairL[[i,1]]},
+
                         With[{ccOptL = {CovDs -> DeleteDuplicates @ Join[If [cOptL =!= {}, cOptL[[1,2]], {}],
                                                                          If [MetricSpaceQ[kind], getCovDs[GetMetric @ kind], {}]]}},
 
-                            If [dnPos[[1]] === upPos[[1]],  (* BD[lp, BD[la, T[lb, up]] or T[lp, up] *)
-                                If [MetricSpaceQ[kind] && moveQobject[tTermL[[dnPos[[1]]]], {dnPos, upPos}, ccOptL],
-                                    If [OrderedQ[{dnPos, upPos}],  (* if dn-up pair *)
-                                        rcL = rcL /. {pairL[[i,1]] -> $dndn[uniqSym][kind][pairL[[i,1]]], pairL[[i,2]] -> $dndn[uniqSym][kind][pairL[[i,2]]]},
+                            (* logic to determine patterns *)
+                            Module[{u}, (* distinct marker for each pair *)
+                                If [dnPos[[1]] === upPos[[1]],  (* BD[lp, BD[la, T[lb, up]] or T[lp, up] *)
+                                    If [MetricSpaceQ[kind] && moveQobject[tTermL[[dnPos[[1]]]], {dnPos, upPos}, ccOptL],
+                                        If [OrderedQ[{dnPos, upPos}],  (* if dn-up pair *)
+                                            {pairL[[i,1]] -> $dndn[u][kind][pairL[[i,1]]], pairL[[i,2]] -> $dndn[u][kind][pairL[[i,2]]]},
+                                        (* else *)
+                                            {pairL[[i,1]] -> $upup[u][kind][pairL[[i,1]]], pairL[[i,2]] -> $upup[u][kind][pairL[[i,2]]]}
+                                        ],
                                     (* else *)
-                                        rcL = rcL /. {pairL[[i,1]] -> $upup[uniqSym][kind][pairL[[i,1]]], pairL[[i,2]] -> $upup[uniqSym][kind][pairL[[i,2]]]}
+                                        If [OrderedQ[{dnPos, upPos}],
+                                            {pairL[[i,1]] -> $dnup[u][kind][pairL[[i,1]]], pairL[[i,2]] -> $dnup[u][kind][pairL[[i,2]]]},
+                                        (* else *)
+                                            {pairL[[i,1]] -> $updn[u][kind][pairL[[i,1]]], pairL[[i,2]] -> $updn[u][kind][pairL[[i,2]]]}
+                                        ]
                                     ],
-                                (* else *)
-                                    If [OrderedQ[{dnPos, upPos}],
-                                        rcL = rcL /. {pairL[[i,1]] -> $dnup[uniqSym][kind][pairL[[i,1]]], pairL[[i,2]] -> $dnup[uniqSym][kind][pairL[[i,2]]]},
+                                (* else different objects *)
+                                    If [MetricSpaceQ[kind] && moveQterm[tTermL[[ dnPos[[1]] ]], dnPos, ccOptL]  \
+                                                           && moveQterm[tTermL[[ upPos[[1]] ]], upPos, ccOptL],
+                                        If [dnPos[[1]] < upPos[[1]],  (* if dn-up pair *)
+                                            {pairL[[i,1]] -> $dndn[u][kind][pairL[[i,1]]], pairL[[i,2]] -> $dndn[u][kind][pairL[[i,2]]]},
+                                        (* else *)
+                                            {pairL[[i,1]] -> $upup[u][kind][pairL[[i,1]]], pairL[[i,2]] -> $upup[u][kind][pairL[[i,2]]]}
+                                        ],
                                     (* else *)
-                                        rcL = rcL /. {pairL[[i,1]] -> $updn[uniqSym][kind][pairL[[i,1]]], pairL[[i,2]] -> $updn[uniqSym][kind][pairL[[i,2]]]}
-                                    ]
-                                ],
-                            (* else *)
-                                If [MetricSpaceQ[kind] && moveQterm[tTermL[[ dnPos[[1]] ]], dnPos, ccOptL]  \
-                                                       && moveQterm[tTermL[[ upPos[[1]] ]], upPos, ccOptL],
-                                    If [dnPos[[1]] < upPos[[1]],  (* if dn-up pair *)
-                                        rcL = rcL /. {pairL[[i,1]] -> $dndn[uniqSym][kind][pairL[[i,1]]], pairL[[i,2]] -> $dndn[uniqSym][kind][pairL[[i,2]]]},
-                                    (* else *)
-                                        rcL = rcL /. {pairL[[i,1]] -> $upup[uniqSym][kind][pairL[[i,1]]], pairL[[i,2]] -> $upup[uniqSym][kind][pairL[[i,2]]]}
-                                    ],
-                                (* else *)
-                                    If [dnPos[[1]] < upPos[[1]],  (* if dn-up pair *)
-                                        rcL = rcL /. {pairL[[i,1]] -> $dnup[uniqSym][kind][pairL[[i,1]]], pairL[[i,2]] -> $dnup[uniqSym][kind][pairL[[i,2]]]},
-                                    (* else *)
-                                        rcL = rcL /. {pairL[[i,1]] -> $updn[uniqSym][kind][pairL[[i,1]]], pairL[[i,2]] -> $updn[uniqSym][kind][pairL[[i,2]]]}
+                                        If [dnPos[[1]] < upPos[[1]],  (* if dn-up pair *)
+                                            {pairL[[i,1]] -> $dnup[u][kind][pairL[[i,1]]], pairL[[i,2]] -> $dnup[u][kind][pairL[[i,2]]]},
+                                        (* else *)
+                                            {pairL[[i,1]] -> $updn[u][kind][pairL[[i,1]]], pairL[[i,2]] -> $updn[u][kind][pairL[[i,2]]]}
+                                        ]
                                     ]
                                 ]
                             ]
                         ]
-                    ],
-                    {i, Length[pairL]}
-                ];
-                rcL
+                    ], {i, Length[pairL]}]},
+
+                    tTermL /. rules
             ]
         ]
     )

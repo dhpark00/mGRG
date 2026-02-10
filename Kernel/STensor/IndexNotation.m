@@ -389,25 +389,25 @@ dnupState[idx_] := If [UpIndexQ[idx], 1, -1]
 takeTensorialFrees[indexL_List] := dropPairs @ Select[indexL, TensorialIndexQ]
 
 (* drop or take not-sorted pairs from the indices *)
-dropPairs      [indexL_List] := Select[indexL, !inPairQ[indexL, #]&]
-takePairs      [indexL_List] := DeleteDuplicates @ Select[indexL, inPairQ[indexL, #]&]  (* 예: {ub, la, lc, ud, lb, ua} => {ub,la, lb, ua}} *)
-takePairsProper[indexL_List] :=  (* 예: {ub, la, lc, ud, lb, ua} => {{ub,lb}, {la,ua}} *)
-    With[{pairL = takePairs[indexL]},  (* 주목: TakePairs 함수와는 달리 인덱스 원래의 순서를 유지함 *)
-        With[{tmpL =
-                Fold[
-                    Join,
-                    {},
-                    If [inPairQ[Drop[pairL, #], pairL[[#]]], {pairL[[#]]},
-                    (* else *)                               {}]& /@ Range[Length[pairL]]
-                ]},
+dropPairs[indexL_List] := With[{cnt = Counts[indexL]}, Select[indexL, !inPairQ[#, cnt]&]]
 
-            {#, FlipIndex[#]}& /@ tmpL
+takePairs[indexL_List] := 
+    With[{cnt = Counts[indexL]},
+        DeleteDuplicates @ Select[indexL, inPairQ[#, cnt]&]  (* {ub, la, lc, ud, lb, ua} => {ub,la, lb, ua}} *)
+    ]
+
+takePairsProper[indexL_List] :=  (* {ub, la, lc, ud, lb, ua} => {{ub,lb}, {la,ua}} *)
+    With[{pairL = takePairs[indexL]},
+        With[{posMap = AssociationThread[pairL -> Range[Length[pairL]]]},
+            With[{tmpL = Select[pairL, (Lookup[posMap, FlipIndex[#], 0] > posMap[#])&]},
+                 {#, FlipIndex[#]}& /@ tmpL
+            ]
         ]
     ]
 
-    inPairQ[indexL_, a_] :=
+    inPairQ[a_, cnt_] :=
         With[{fa = FlipIndex[a]},  (* NB: When 'a' is NOT an index, FlipIndex[a] == a. *)
-            TensorialIndexQ[a] && !OneDimKindQ[IndexToKind @ a] && (fa =!= a && MemberQ[indexL, fa])
+            TensorialIndexQ[a] && !OneDimKindQ[IndexToKind @ a] && fa =!= a && !MissingQ[cnt[fa]]
         ]
 
 (************************* Kind Structures **************************)
@@ -942,9 +942,8 @@ defineOperand[oName_, permS_String, kindL_List, dnupL_List, oType_, OptionsPatte
             With[{idxL = Transpose[
                     With[{rc = indexCharSpace[#]},
                         If [IndexToKind[#] =!= NonKind && UpIndexQ[#], rc[[{2, 1}]],
-                        (* else *)                                      rc[[{1, 2}]]]
+                        (* else *)                                     rc[[{1, 2}]]]
                     ]& /@ argL]},
-
                 SubsuperscriptBox[prtStr, TemplateBox[idxL[[1]], "RowDefault"],
                                           TemplateBox[idxL[[2]], "RowDefault"]]
             ]
