@@ -29,7 +29,7 @@ InitCTensor[___] := Message[InitCTensor::usage]
 
 	initCTensor[coSys_, metric_, basis_, opts:OptionsPattern[]] := (
             If [mGRG`STensor`Private`flagTable[InitCTensorFlag] && OptionValue[InitCTensor] == False,
-                Message[Msg::warn, "CTensor is already initialized.", "Use InitCTensor -> True option if you want to re-initialize CTensor, or ClearCTensor[] to clear CTensor.", "", ""]; Return[]
+                Message[Msg::warn, "CTensor is already initialized.", "Use InitCTensor -> True option to re-initialize CTensor.", "", ""]; Return[]
             ];
 
             If [!TorsionFreeQ[CD], Message[Msg::err, "CTensor requires a torsion-free connection.", "", "", ""]; Return[$Failed]];

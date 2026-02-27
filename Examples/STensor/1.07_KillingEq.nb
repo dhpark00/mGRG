@@ -1,0 +1,1066 @@
+(* Content-type: application/mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 6.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       145,          7]
+NotebookDataLength[     39148,       1058]
+NotebookOptionsPosition[     35551,        990]
+NotebookOutlinePosition[     36071,       1009]
+CellTagsIndexPosition[     36028,       1006]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"<<", " ", "mGRG`STensor`"}]], "Input",
+ CellChangeTimes->{{3.758440487875311*^9, 3.758440492738589*^9}, {
+  3.827294970631355*^9, 3.827294970756356*^9}, {3.951124701223551*^9, 
+  3.9511247036488132`*^9}, {3.979897595066537*^9, 3.979897598448264*^9}},
+ CellLabel->"In[1]:=",ExpressionUUID->"363b0d83-6913-4cb6-824a-fa1da5631042"],
+
+Cell[CellGroupData[{
+
+Cell["Killing Equations", "Title",
+ CellChangeTimes->{
+  3.519177280546875*^9, {3.6390102968038564`*^9, 3.63901030788349*^9}},
+ FontSize->24,ExpressionUUID->"780118de-8f68-4496-8333-8e079f48fdbc"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"TorsionFreeQ", "[", "CD", "]"}]], "Input",
+ CellChangeTimes->{{3.979900563131822*^9, 3.979900572357668*^9}},
+ CellLabel->"In[2]:=",ExpressionUUID->"4b7214a2-9794-48cf-b3c6-4fd208d2eff2"],
+
+Cell[BoxData["True"], "Output",
+ CellChangeTimes->{3.9799005806560373`*^9},
+ CellLabel->"Out[2]=",ExpressionUUID->"6a04e490-fdf7-4ba4-8fec-8f7ab21195a6"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Killing equations", "Subsection",
+ CellChangeTimes->{{3.639010496404273*^9, 
+  3.6390105021075997`*^9}},ExpressionUUID->"2e2d06c4-d7cd-4604-b3c7-\
+67938f7f8c3a"],
+
+Cell[BoxData[
+ RowBox[{"Tdefine", "[", 
+  RowBox[{"K", "[", "ua", "]"}], "]"}]], "Input",
+ CellChangeTimes->{{3.6390103371361637`*^9, 3.639010346460697*^9}, {
+  3.97229668937077*^9, 3.9722966928536043`*^9}},
+ CellLabel->"In[2]:=",ExpressionUUID->"6eba2503-c3ef-4379-8afd-95bbb417c49f"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{"LD", "[", 
+  RowBox[{"K", ",", 
+   RowBox[{"Metricg", "[", 
+    RowBox[{"la", ",", "lb"}], "]"}]}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"LDtoCD", "[", "%", "]"}], "\[IndentingNewLine]", 
+ RowBox[{"%", "//", "Absorbg"}]}], "Input",
+ CellChangeTimes->{{3.6390103320808744`*^9, 3.63901036506076*^9}, {
+  3.916056301003332*^9, 3.91605630605138*^9}},
+ CellLabel->"In[3]:=",ExpressionUUID->"bd38ff5c-6bb1-4b60-8f8e-d931d3ec7816"],
+
+Cell[BoxData[
+ InterpretationBox[
+  StyleBox[
+   TemplateBox[{
+     SubscriptBox["\"\[ScriptCapitalL]\"", "K"], 
+     InterpretationBox[
+      StyleBox[
+       SubsuperscriptBox["g", 
+        TemplateBox[{"a", "b"}, "RowDefault"], 
+        TemplateBox[{
+          StyleBox["1", ShowContents -> False, StripOnInput -> False], 
+          StyleBox["1", ShowContents -> False, StripOnInput -> False]}, 
+         "RowDefault"]], AutoSpacing -> False, ShowAutoStyles -> False], 
+      Apply[mGRG`STensor`Metricg, {$CellContext`la, $CellContext`lb}], 
+      Editable -> False]},
+    "RowDefault"],
+   ShowAutoStyles->False,
+   AutoSpacing->False],
+  mGRG`STensor`LD[K, 
+   mGRG`STensor`Metricg[$CellContext`la, $CellContext`lb]],
+  Editable->False]], "Output",
+ CellChangeTimes->{{3.639010359247428*^9, 3.639010366243828*^9}, 
+   3.639132727425065*^9, 3.712290670960743*^9, 3.7584405002720203`*^9, 
+   3.775129662365436*^9, 3.827294985320933*^9, 3.9160563064921417`*^9, 
+   3.9511247266478825`*^9, 3.972296710626832*^9, 3.979897889670992*^9},
+ CellLabel->"Out[3]=",ExpressionUUID->"70f46f58-68d8-47a6-9396-415e541ad55e"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   InterpretationBox[
+    StyleBox[
+     TemplateBox[{
+       SubscriptBox["\[Del]", "b"], 
+       InterpretationBox[
+        StyleBox[
+         SubsuperscriptBox["K", 
+          TemplateBox[{
+            StyleBox["1", ShowContents -> False, StripOnInput -> False]}, 
+           "RowDefault"], 
+          TemplateBox[{"c"}, "RowDefault"]], AutoSpacing -> False, 
+         ShowAutoStyles -> False], 
+        Apply[K, {$CellContext`uc}], Editable -> False]},
+      "RowDefault"],
+     ShowAutoStyles->False,
+     AutoSpacing->False],
+    mGRG`STensor`CD[$CellContext`lb, 
+     K[$CellContext`uc]],
+    Editable->False], " ", 
+   InterpretationBox[
+    StyleBox[
+     SubsuperscriptBox["g", 
+      TemplateBox[{"a", "c"},
+       "RowDefault"], 
+      TemplateBox[{
+        StyleBox["1", ShowContents -> False, StripOnInput -> False], 
+        StyleBox["1", ShowContents -> False, StripOnInput -> False]},
+       "RowDefault"]],
+     ShowAutoStyles->False,
+     AutoSpacing->False],
+    Apply[mGRG`STensor`Metricg, {$CellContext`la, $CellContext`lc}],
+    Editable->False]}], "+", 
+  RowBox[{
+   InterpretationBox[
+    StyleBox[
+     TemplateBox[{
+       SubscriptBox["\[Del]", "a"], 
+       InterpretationBox[
+        StyleBox[
+         SubsuperscriptBox["K", 
+          TemplateBox[{
+            StyleBox["1", ShowContents -> False, StripOnInput -> False]}, 
+           "RowDefault"], 
+          TemplateBox[{"c"}, "RowDefault"]], AutoSpacing -> False, 
+         ShowAutoStyles -> False], 
+        Apply[K, {$CellContext`uc}], Editable -> False]},
+      "RowDefault"],
+     ShowAutoStyles->False,
+     AutoSpacing->False],
+    mGRG`STensor`CD[$CellContext`la, 
+     K[$CellContext`uc]],
+    Editable->False], " ", 
+   InterpretationBox[
+    StyleBox[
+     SubsuperscriptBox["g", 
+      TemplateBox[{"c", "b"},
+       "RowDefault"], 
+      TemplateBox[{
+        StyleBox["1", ShowContents -> False, StripOnInput -> False], 
+        StyleBox["1", ShowContents -> False, StripOnInput -> False]},
+       "RowDefault"]],
+     ShowAutoStyles->False,
+     AutoSpacing->False],
+    Apply[mGRG`STensor`Metricg, {$CellContext`lc, $CellContext`lb}],
+    Editable->False]}]}]], "Output",
+ CellChangeTimes->{{3.639010359247428*^9, 3.639010366243828*^9}, 
+   3.639132727425065*^9, 3.712290670960743*^9, 3.7584405002720203`*^9, 
+   3.775129662365436*^9, 3.827294985320933*^9, 3.9160563064921417`*^9, 
+   3.9511247266478825`*^9, 3.972296710626832*^9, 3.9798978896721087`*^9},
+ CellLabel->"Out[4]=",ExpressionUUID->"f775e3ab-1ce4-448b-b035-72f464746665"],
+
+Cell[BoxData[
+ RowBox[{
+  InterpretationBox[
+   StyleBox[
+    TemplateBox[{
+      SubscriptBox["\[Del]", "a"], 
+      InterpretationBox[
+       StyleBox[
+        SubsuperscriptBox["K", 
+         TemplateBox[{"b"}, "RowDefault"], 
+         TemplateBox[{
+           StyleBox["1", ShowContents -> False, StripOnInput -> False]}, 
+          "RowDefault"]], AutoSpacing -> False, ShowAutoStyles -> False], 
+       Apply[K, {$CellContext`lb}], Editable -> False]},
+     "RowDefault"],
+    ShowAutoStyles->False,
+    AutoSpacing->False],
+   mGRG`STensor`CD[$CellContext`la, 
+    K[$CellContext`lb]],
+   Editable->False], "+", 
+  InterpretationBox[
+   StyleBox[
+    TemplateBox[{
+      SubscriptBox["\[Del]", "b"], 
+      InterpretationBox[
+       StyleBox[
+        SubsuperscriptBox["K", 
+         TemplateBox[{"a"}, "RowDefault"], 
+         TemplateBox[{
+           StyleBox["1", ShowContents -> False, StripOnInput -> False]}, 
+          "RowDefault"]], AutoSpacing -> False, ShowAutoStyles -> False], 
+       Apply[K, {$CellContext`la}], Editable -> False]},
+     "RowDefault"],
+    ShowAutoStyles->False,
+    AutoSpacing->False],
+   mGRG`STensor`CD[$CellContext`lb, 
+    K[$CellContext`la]],
+   Editable->False]}]], "Output",
+ CellChangeTimes->{{3.639010359247428*^9, 3.639010366243828*^9}, 
+   3.639132727425065*^9, 3.712290670960743*^9, 3.7584405002720203`*^9, 
+   3.775129662365436*^9, 3.827294985320933*^9, 3.9160563064921417`*^9, 
+   3.9511247266478825`*^9, 3.972296710626832*^9, 3.979897889673319*^9},
+ CellLabel->"Out[5]=",ExpressionUUID->"8d586a13-0e1a-4d1b-90d6-62cfb75ad682"]
+}, Open  ]],
+
+Cell[BoxData[
+ FormBox[Cell[TextData[Cell[BoxData[
+   FormBox[
+    RowBox[{
+     RowBox[{
+      RowBox[{
+       SubscriptBox["\[Del]", "a"], 
+       SubscriptBox["K", "b"]}], " ", "+", " ", 
+      RowBox[{
+       SubscriptBox["\[Del]", "b"], 
+       SubscriptBox["K", "a"]}]}], " ", "=", " ", "0"}], TraditionalForm]],
+   CellChangeTimes->{{3.518921218317237*^9, 3.5189212445367374`*^9}, {
+     3.639132196693709*^9, 3.639132223685253*^9}, {3.639132350165487*^9, 
+     3.639132424565742*^9}, {3.6391324619098783`*^9, 3.639132531973885*^9}, {
+     3.639132586212988*^9, 3.639132591069265*^9}, {3.639133730661447*^9, 
+     3.639133749813542*^9}, 3.916056320717684*^9},
+   TextAlignment->Center,ExpressionUUID->
+   "96d59cb8-3fe0-f14e-9ae3-e06e98c4a12b"]],ExpressionUUID->
+   "03bd5cba-db16-3041-a7e2-cda3831c73cb"], TraditionalForm]], "Text",
+ CellChangeTimes->{{3.518921218317237*^9, 3.5189212445367374`*^9}, {
+  3.639132196693709*^9, 3.639132223685253*^9}, {3.639132350165487*^9, 
+  3.639132424565742*^9}, {3.6391324619098783`*^9, 3.639132531973885*^9}, {
+  3.639132586212988*^9, 3.639132591069265*^9}, {3.639133730661447*^9, 
+  3.639133749813542*^9}, {3.916056320717684*^9, 3.9160563265148144`*^9}},
+ TextAlignment->Center,ExpressionUUID->"5d72cefe-0766-4f52-8ff2-ca267d37058b"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Derivatives of Killing vectors", "Subsection",
+ CellChangeTimes->{{3.6390105140522823`*^9, 
+  3.639010526195977*^9}},ExpressionUUID->"bae08108-68ad-4c3a-ae24-\
+3ea395861113"],
+
+Cell["Definition of Riemann curvature:", "Text",
+ CellChangeTimes->{{3.639133076421026*^9, 3.639133089212758*^9}, {
+  3.979897909436068*^9, 
+  3.9798979167368917`*^9}},ExpressionUUID->"353c23a9-37b2-4628-8889-\
+78940c6b3fa7"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"CD", "[", 
+   RowBox[{"la", ",", "lb", ",", 
+    RowBox[{"K", "[", "lc", "]"}]}], "]"}], "-", 
+  RowBox[{"CD", "[", 
+   RowBox[{"lb", ",", "la", ",", 
+    RowBox[{"K", "[", "lc", "]"}]}], "]"}], "-", 
+  RowBox[{
+   RowBox[{"RiemannCD", "[", 
+    RowBox[{"la", ",", "lb", ",", "lc", ",", "ud"}], "]"}], 
+   RowBox[{"K", "[", "ld", "]"}]}]}]], "Input",
+ CellChangeTimes->{{3.639010529346157*^9, 3.6390105410608277`*^9}, {
+  3.639132249109707*^9, 3.639132266677712*^9}, {3.639132710661106*^9, 
+  3.639132712861232*^9}, {3.639132958102259*^9, 3.6391329675578*^9}, {
+  3.639133007109062*^9, 3.639133047653381*^9}, {3.916056419802412*^9, 
+  3.9160564204425907`*^9}, {3.9160578227045307`*^9, 3.9160578240067463`*^9}},
+ CellLabel->"In[6]:=",ExpressionUUID->"67aefaa8-24d1-4972-8a94-8a12754c602a"],
+
+Cell[BoxData[
+ RowBox[{
+  InterpretationBox[
+   StyleBox[
+    TemplateBox[{
+      SubscriptBox["\[Del]", "a"], 
+      InterpretationBox[
+       StyleBox[
+        TemplateBox[{
+          SubscriptBox["\[Del]", "b"], 
+          InterpretationBox[
+           StyleBox[
+            SubsuperscriptBox["K", 
+             TemplateBox[{"c"}, "RowDefault"], 
+             TemplateBox[{
+               StyleBox["1", ShowContents -> False, StripOnInput -> False]}, 
+              "RowDefault"]], AutoSpacing -> False, ShowAutoStyles -> False], 
+           Apply[K, {$CellContext`lc}], Editable -> False]}, "RowDefault"], 
+        AutoSpacing -> False, ShowAutoStyles -> False], 
+       mGRG`STensor`CD[$CellContext`lb, 
+        K[$CellContext`lc]], Editable -> False]},
+     "RowDefault"],
+    ShowAutoStyles->False,
+    AutoSpacing->False],
+   mGRG`STensor`CD[$CellContext`la, 
+    mGRG`STensor`CD[$CellContext`lb, 
+     K[$CellContext`lc]]],
+   Editable->False], "-", 
+  InterpretationBox[
+   StyleBox[
+    TemplateBox[{
+      SubscriptBox["\[Del]", "b"], 
+      InterpretationBox[
+       StyleBox[
+        TemplateBox[{
+          SubscriptBox["\[Del]", "a"], 
+          InterpretationBox[
+           StyleBox[
+            SubsuperscriptBox["K", 
+             TemplateBox[{"c"}, "RowDefault"], 
+             TemplateBox[{
+               StyleBox["1", ShowContents -> False, StripOnInput -> False]}, 
+              "RowDefault"]], AutoSpacing -> False, ShowAutoStyles -> False], 
+           Apply[K, {$CellContext`lc}], Editable -> False]}, "RowDefault"], 
+        AutoSpacing -> False, ShowAutoStyles -> False], 
+       mGRG`STensor`CD[$CellContext`la, 
+        K[$CellContext`lc]], Editable -> False]},
+     "RowDefault"],
+    ShowAutoStyles->False,
+    AutoSpacing->False],
+   mGRG`STensor`CD[$CellContext`lb, 
+    mGRG`STensor`CD[$CellContext`la, 
+     K[$CellContext`lc]]],
+   Editable->False], "-", 
+  RowBox[{
+   InterpretationBox[
+    StyleBox[
+     SubsuperscriptBox["K", 
+      TemplateBox[{"d"},
+       "RowDefault"], 
+      TemplateBox[{
+        StyleBox["1", ShowContents -> False, StripOnInput -> False]},
+       "RowDefault"]],
+     ShowAutoStyles->False,
+     AutoSpacing->False],
+    Apply[K, {$CellContext`ld}],
+    Editable->False], " ", 
+   InterpretationBox[
+    StyleBox[
+     SubsuperscriptBox["R", 
+      TemplateBox[{"a", "b", "c", 
+        StyleBox["1", ShowContents -> False, StripOnInput -> False]},
+       "RowDefault"], 
+      TemplateBox[{
+        StyleBox["1", ShowContents -> False, StripOnInput -> False], 
+        StyleBox["1", ShowContents -> False, StripOnInput -> False], 
+        StyleBox["1", ShowContents -> False, StripOnInput -> False], "d"},
+       "RowDefault"]],
+     ShowAutoStyles->False,
+     AutoSpacing->False],
+    Apply[
+    mGRG`STensor`RiemannCD, {$CellContext`la, $CellContext`lb, \
+$CellContext`lc, $CellContext`ud}],
+    Editable->False]}]}]], "Output",
+ CellChangeTimes->{
+  3.6390105416098585`*^9, {3.639132713158249*^9, 3.6391327297081957`*^9}, 
+   3.6391330485444326`*^9, 3.712290681901517*^9, 3.7584405387912235`*^9, 
+   3.775129688394862*^9, 3.8272949944475684`*^9, 3.9160564329326515`*^9, 
+   3.9160578257811375`*^9, 3.951124742470495*^9, 3.9722967397433977`*^9, 
+   3.979897921987444*^9},
+ CellLabel->"Out[6]=",ExpressionUUID->"095cc75d-1f50-465b-b78b-dd3d7781836e"]
+}, Open  ]],
+
+Cell["Using the Killing eq. the above expression becomes", "Text",
+ CellChangeTimes->{{3.639133100860424*^9, 3.639133104364624*^9}, {
+   3.9722967758024178`*^9, 3.97229679866346*^9}, 3.972296869605721*^9, {
+   3.979897974488411*^9, 
+   3.9798979846656103`*^9}},ExpressionUUID->"a3643482-17ef-4fe7-90b1-\
+f30f4d5641ff"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"expr", "=", 
+  RowBox[{
+   RowBox[{"CD", "[", 
+    RowBox[{"la", ",", "lb", ",", 
+     RowBox[{"K", "[", "lc", "]"}]}], "]"}], "+", 
+   RowBox[{"CD", "[", 
+    RowBox[{"lb", ",", "lc", ",", 
+     RowBox[{"K", "[", "la", "]"}]}], "]"}], "-", 
+   RowBox[{
+    RowBox[{"RiemannCD", "[", 
+     RowBox[{"la", ",", "lb", ",", "lc", ",", "ud"}], "]"}], 
+    RowBox[{"K", "[", "ld", "]"}]}]}]}]], "Input",
+ CellChangeTimes->{{3.639133096012147*^9, 3.6391331227256746`*^9}, {
+  3.827295050377288*^9, 3.827295051705784*^9}, {3.916056492761751*^9, 
+  3.9160564935775394`*^9}, {3.916057830791687*^9, 3.9160578314787483`*^9}},
+ CellLabel->"In[7]:=",ExpressionUUID->"d51fbefa-e444-4ddb-93f0-89a11884c7bf"],
+
+Cell[BoxData[
+ RowBox[{
+  InterpretationBox[
+   StyleBox[
+    TemplateBox[{
+      SubscriptBox["\[Del]", "a"], 
+      InterpretationBox[
+       StyleBox[
+        TemplateBox[{
+          SubscriptBox["\[Del]", "b"], 
+          InterpretationBox[
+           StyleBox[
+            SubsuperscriptBox["K", 
+             TemplateBox[{"c"}, "RowDefault"], 
+             TemplateBox[{
+               StyleBox["1", ShowContents -> False, StripOnInput -> False]}, 
+              "RowDefault"]], AutoSpacing -> False, ShowAutoStyles -> False], 
+           Apply[K, {$CellContext`lc}], Editable -> False]}, "RowDefault"], 
+        AutoSpacing -> False, ShowAutoStyles -> False], 
+       mGRG`STensor`CD[$CellContext`lb, 
+        K[$CellContext`lc]], Editable -> False]},
+     "RowDefault"],
+    ShowAutoStyles->False,
+    AutoSpacing->False],
+   mGRG`STensor`CD[$CellContext`la, 
+    mGRG`STensor`CD[$CellContext`lb, 
+     K[$CellContext`lc]]],
+   Editable->False], "+", 
+  InterpretationBox[
+   StyleBox[
+    TemplateBox[{
+      SubscriptBox["\[Del]", "b"], 
+      InterpretationBox[
+       StyleBox[
+        TemplateBox[{
+          SubscriptBox["\[Del]", "c"], 
+          InterpretationBox[
+           StyleBox[
+            SubsuperscriptBox["K", 
+             TemplateBox[{"a"}, "RowDefault"], 
+             TemplateBox[{
+               StyleBox["1", ShowContents -> False, StripOnInput -> False]}, 
+              "RowDefault"]], AutoSpacing -> False, ShowAutoStyles -> False], 
+           Apply[K, {$CellContext`la}], Editable -> False]}, "RowDefault"], 
+        AutoSpacing -> False, ShowAutoStyles -> False], 
+       mGRG`STensor`CD[$CellContext`lc, 
+        K[$CellContext`la]], Editable -> False]},
+     "RowDefault"],
+    ShowAutoStyles->False,
+    AutoSpacing->False],
+   mGRG`STensor`CD[$CellContext`lb, 
+    mGRG`STensor`CD[$CellContext`lc, 
+     K[$CellContext`la]]],
+   Editable->False], "-", 
+  RowBox[{
+   InterpretationBox[
+    StyleBox[
+     SubsuperscriptBox["K", 
+      TemplateBox[{"d"},
+       "RowDefault"], 
+      TemplateBox[{
+        StyleBox["1", ShowContents -> False, StripOnInput -> False]},
+       "RowDefault"]],
+     ShowAutoStyles->False,
+     AutoSpacing->False],
+    Apply[K, {$CellContext`ld}],
+    Editable->False], " ", 
+   InterpretationBox[
+    StyleBox[
+     SubsuperscriptBox["R", 
+      TemplateBox[{"a", "b", "c", 
+        StyleBox["1", ShowContents -> False, StripOnInput -> False]},
+       "RowDefault"], 
+      TemplateBox[{
+        StyleBox["1", ShowContents -> False, StripOnInput -> False], 
+        StyleBox["1", ShowContents -> False, StripOnInput -> False], 
+        StyleBox["1", ShowContents -> False, StripOnInput -> False], "d"},
+       "RowDefault"]],
+     ShowAutoStyles->False,
+     AutoSpacing->False],
+    Apply[
+    mGRG`STensor`RiemannCD, {$CellContext`la, $CellContext`lb, \
+$CellContext`lc, $CellContext`ud}],
+    Editable->False]}]}]], "Output",
+ CellChangeTimes->{3.639133123049693*^9, 3.712290684596847*^9, 
+  3.758440576404375*^9, 3.775129737794734*^9, 3.827295007509759*^9, 
+  3.8272950528153744`*^9, 3.9160564957095547`*^9, 3.916057832163162*^9, 
+  3.9511247791169224`*^9, 3.972296806644549*^9, 3.9798979954540567`*^9},
+ CellLabel->"Out[7]=",ExpressionUUID->"01bcaccb-a7ab-4959-b238-8bdfe334d38e"]
+}, Open  ]],
+
+Cell[TextData[{
+ "(",
+ Cell[BoxData[
+  FormBox["abc", TraditionalForm]],ExpressionUUID->
+  "54dd0534-d35a-40de-8d24-55208c75710b"],
+ ") + (",
+ Cell[BoxData[
+  FormBox["bca", TraditionalForm]],ExpressionUUID->
+  "a4954fde-d52d-46d8-bd17-b9ebf831e79e"],
+ ") - (c",
+ Cell[BoxData[
+  FormBox["ab", TraditionalForm]],ExpressionUUID->
+  "99310ea0-2208-437d-8018-6e2148c3e7af"],
+ "):"
+}], "Text",
+ CellChangeTimes->{{3.639133167980263*^9, 
+  3.6391332064124618`*^9}},ExpressionUUID->"4c9bc6fd-0f27-45fc-8086-\
+a8d3b753d0c0"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"expr", "+", 
+  RowBox[{"(", 
+   RowBox[{"expr", "/.", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"la", "\[Rule]", "lb"}], ",", 
+      RowBox[{"lb", "\[Rule]", "lc"}], ",", 
+      RowBox[{"lc", "\[Rule]", "la"}]}], "}"}]}], ")"}], "-", 
+  RowBox[{"(", 
+   RowBox[{"expr", "/.", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"la", "\[Rule]", "lc"}], ",", 
+      RowBox[{"lb", "\[Rule]", "la"}], ",", 
+      RowBox[{"lc", "\[Rule]", "lb"}]}], "}"}]}], ")"}]}]], "Input",
+ CellChangeTimes->{{3.827295142614058*^9, 3.827295165164741*^9}},
+ CellLabel->"In[8]:=",ExpressionUUID->"40702c5a-34aa-4f95-8ce1-28567acb32a5"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"2", " ", 
+   InterpretationBox[
+    StyleBox[
+     TemplateBox[{
+       SubscriptBox["\[Del]", "b"], 
+       InterpretationBox[
+        StyleBox[
+         TemplateBox[{
+           SubscriptBox["\[Del]", "c"], 
+           InterpretationBox[
+            StyleBox[
+             SubsuperscriptBox["K", 
+              TemplateBox[{"a"}, "RowDefault"], 
+              TemplateBox[{
+                StyleBox["1", ShowContents -> False, StripOnInput -> False]}, 
+               "RowDefault"]], AutoSpacing -> False, ShowAutoStyles -> False], 
+            Apply[K, {$CellContext`la}], Editable -> False]}, "RowDefault"], 
+         AutoSpacing -> False, ShowAutoStyles -> False], 
+        mGRG`STensor`CD[$CellContext`lc, 
+         K[$CellContext`la]], Editable -> False]},
+      "RowDefault"],
+     ShowAutoStyles->False,
+     AutoSpacing->False],
+    mGRG`STensor`CD[$CellContext`lb, 
+     mGRG`STensor`CD[$CellContext`lc, 
+      K[$CellContext`la]]],
+    Editable->False]}], "-", 
+  RowBox[{
+   InterpretationBox[
+    StyleBox[
+     SubsuperscriptBox["K", 
+      TemplateBox[{"d"},
+       "RowDefault"], 
+      TemplateBox[{
+        StyleBox["1", ShowContents -> False, StripOnInput -> False]},
+       "RowDefault"]],
+     ShowAutoStyles->False,
+     AutoSpacing->False],
+    Apply[K, {$CellContext`ld}],
+    Editable->False], " ", 
+   InterpretationBox[
+    StyleBox[
+     SubsuperscriptBox["R", 
+      TemplateBox[{"a", "b", "c", 
+        StyleBox["1", ShowContents -> False, StripOnInput -> False]},
+       "RowDefault"], 
+      TemplateBox[{
+        StyleBox["1", ShowContents -> False, StripOnInput -> False], 
+        StyleBox["1", ShowContents -> False, StripOnInput -> False], 
+        StyleBox["1", ShowContents -> False, StripOnInput -> False], "d"},
+       "RowDefault"]],
+     ShowAutoStyles->False,
+     AutoSpacing->False],
+    Apply[
+    mGRG`STensor`RiemannCD, {$CellContext`la, $CellContext`lb, \
+$CellContext`lc, $CellContext`ud}],
+    Editable->False]}], "-", 
+  RowBox[{
+   InterpretationBox[
+    StyleBox[
+     SubsuperscriptBox["K", 
+      TemplateBox[{"d"},
+       "RowDefault"], 
+      TemplateBox[{
+        StyleBox["1", ShowContents -> False, StripOnInput -> False]},
+       "RowDefault"]],
+     ShowAutoStyles->False,
+     AutoSpacing->False],
+    Apply[K, {$CellContext`ld}],
+    Editable->False], " ", 
+   InterpretationBox[
+    StyleBox[
+     SubsuperscriptBox["R", 
+      TemplateBox[{"b", "c", "a", 
+        StyleBox["1", ShowContents -> False, StripOnInput -> False]},
+       "RowDefault"], 
+      TemplateBox[{
+        StyleBox["1", ShowContents -> False, StripOnInput -> False], 
+        StyleBox["1", ShowContents -> False, StripOnInput -> False], 
+        StyleBox["1", ShowContents -> False, StripOnInput -> False], "d"},
+       "RowDefault"]],
+     ShowAutoStyles->False,
+     AutoSpacing->False],
+    Apply[
+    mGRG`STensor`RiemannCD, {$CellContext`lb, $CellContext`lc, \
+$CellContext`la, $CellContext`ud}],
+    Editable->False]}], "+", 
+  RowBox[{
+   InterpretationBox[
+    StyleBox[
+     SubsuperscriptBox["K", 
+      TemplateBox[{"d"},
+       "RowDefault"], 
+      TemplateBox[{
+        StyleBox["1", ShowContents -> False, StripOnInput -> False]},
+       "RowDefault"]],
+     ShowAutoStyles->False,
+     AutoSpacing->False],
+    Apply[K, {$CellContext`ld}],
+    Editable->False], " ", 
+   InterpretationBox[
+    StyleBox[
+     SubsuperscriptBox["R", 
+      TemplateBox[{"c", "a", "b", 
+        StyleBox["1", ShowContents -> False, StripOnInput -> False]},
+       "RowDefault"], 
+      TemplateBox[{
+        StyleBox["1", ShowContents -> False, StripOnInput -> False], 
+        StyleBox["1", ShowContents -> False, StripOnInput -> False], 
+        StyleBox["1", ShowContents -> False, StripOnInput -> False], "d"},
+       "RowDefault"]],
+     ShowAutoStyles->False,
+     AutoSpacing->False],
+    Apply[
+    mGRG`STensor`RiemannCD, {$CellContext`lc, $CellContext`la, \
+$CellContext`lb, $CellContext`ud}],
+    Editable->False]}]}]], "Output",
+ CellChangeTimes->{
+  3.827295166243104*^9, {3.82729536332801*^9, 3.827295383754087*^9}, 
+   3.916056526238714*^9, 3.9160578399299927`*^9, 3.9511247915278854`*^9, 
+   3.9722968361881933`*^9, 3.979898016166733*^9},
+ CellLabel->"Out[8]=",ExpressionUUID->"79ce4b46-a3b6-4bc5-ba0f-2413feb2ae6a"]
+}, Open  ]],
+
+Cell[TextData[{
+ "Using the Bianchi IDentity ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{
+     SuperscriptBox[
+      SubscriptBox["R", "abc"], "d"], "+", 
+     SuperscriptBox[
+      SubscriptBox["R", "bca"], "d"], "+", 
+     SuperscriptBox[
+      SubscriptBox["R", "cab"], "d"]}], "=", "0"}], TraditionalForm]],
+  ExpressionUUID->"ac289287-7314-4397-bba7-8de827c23b82"],
+ " we find"
+}], "Text",
+ CellChangeTimes->{{3.639133454428647*^9, 3.639133485652433*^9}, {
+  3.639133592797561*^9, 3.639133600694013*^9}, {3.9722968438369303`*^9, 
+  3.972296865136405*^9}},ExpressionUUID->"4f76692a-3c3d-4076-bad4-\
+cad2c0781a28"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"%", "+", 
+  RowBox[{
+   RowBox[{"K", "[", "ld", "]"}], 
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"RiemannCD", "[", 
+      RowBox[{"la", ",", "lb", ",", "lc", ",", "ud"}], "]"}], "+", 
+     RowBox[{"RiemannCD", "[", 
+      RowBox[{"lb", ",", "lc", ",", "la", ",", "ud"}], "]"}], "+", 
+     RowBox[{"RiemannCD", "[", 
+      RowBox[{"lc", ",", "la", ",", "lb", ",", "ud"}], "]"}]}], 
+    ")"}]}]}]], "Input",
+ CellChangeTimes->{{3.6391336372541037`*^9, 3.639133693877343*^9}, {
+  3.916056578633646*^9, 3.9160565795452633`*^9}, {3.9160578465747128`*^9, 
+  3.9160578472544155`*^9}},
+ CellLabel->"In[9]:=",ExpressionUUID->"8ed23187-7f66-4fe6-8eee-f99cead9a97e"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"2", " ", 
+   InterpretationBox[
+    StyleBox[
+     TemplateBox[{
+       SubscriptBox["\[Del]", "b"], 
+       InterpretationBox[
+        StyleBox[
+         TemplateBox[{
+           SubscriptBox["\[Del]", "c"], 
+           InterpretationBox[
+            StyleBox[
+             SubsuperscriptBox["K", 
+              TemplateBox[{"a"}, "RowDefault"], 
+              TemplateBox[{
+                StyleBox["1", ShowContents -> False, StripOnInput -> False]}, 
+               "RowDefault"]], AutoSpacing -> False, ShowAutoStyles -> False], 
+            Apply[K, {$CellContext`la}], Editable -> False]}, "RowDefault"], 
+         AutoSpacing -> False, ShowAutoStyles -> False], 
+        mGRG`STensor`CD[$CellContext`lc, 
+         K[$CellContext`la]], Editable -> False]},
+      "RowDefault"],
+     ShowAutoStyles->False,
+     AutoSpacing->False],
+    mGRG`STensor`CD[$CellContext`lb, 
+     mGRG`STensor`CD[$CellContext`lc, 
+      K[$CellContext`la]]],
+    Editable->False]}], "+", 
+  RowBox[{"2", " ", 
+   InterpretationBox[
+    StyleBox[
+     SubsuperscriptBox["K", 
+      TemplateBox[{"d"},
+       "RowDefault"], 
+      TemplateBox[{
+        StyleBox["1", ShowContents -> False, StripOnInput -> False]},
+       "RowDefault"]],
+     ShowAutoStyles->False,
+     AutoSpacing->False],
+    Apply[K, {$CellContext`ld}],
+    Editable->False], " ", 
+   InterpretationBox[
+    StyleBox[
+     SubsuperscriptBox["R", 
+      TemplateBox[{"c", "a", "b", 
+        StyleBox["1", ShowContents -> False, StripOnInput -> False]},
+       "RowDefault"], 
+      TemplateBox[{
+        StyleBox["1", ShowContents -> False, StripOnInput -> False], 
+        StyleBox["1", ShowContents -> False, StripOnInput -> False], 
+        StyleBox["1", ShowContents -> False, StripOnInput -> False], "d"},
+       "RowDefault"]],
+     ShowAutoStyles->False,
+     AutoSpacing->False],
+    Apply[
+    mGRG`STensor`RiemannCD, {$CellContext`lc, $CellContext`la, \
+$CellContext`lb, $CellContext`ud}],
+    Editable->False]}]}]], "Output",
+ CellChangeTimes->{
+  3.639133701463777*^9, 3.712290692474422*^9, 3.758440591568242*^9, 
+   3.775129772824933*^9, 3.827295226379884*^9, {3.827295364656478*^9, 
+   3.827295384894962*^9}, 3.9160565947720547`*^9, 3.916057848783386*^9, 
+   3.951124814756716*^9, 3.972296899646789*^9, 3.9798980483831253`*^9},
+ CellLabel->"Out[9]=",ExpressionUUID->"97a2e8ca-b008-4b42-9e77-7f09bf5e870a"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"%", "/.", 
+  RowBox[{"{", 
+   RowBox[{
+    RowBox[{"lb", "\[Rule]", "la"}], ",", 
+    RowBox[{"lc", "\[Rule]", "lb"}], ",", 
+    RowBox[{"la", "\[Rule]", "uc"}]}], "}"}]}]], "Input",
+ CellChangeTimes->{{3.8272952393357077`*^9, 3.827295294033142*^9}},
+ CellLabel->"In[10]:=",ExpressionUUID->"2e7f0f0b-8564-42c1-8441-7a48f54844be"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"2", " ", 
+   InterpretationBox[
+    StyleBox[
+     TemplateBox[{
+       SubscriptBox["\[Del]", "a"], 
+       InterpretationBox[
+        StyleBox[
+         TemplateBox[{
+           SubscriptBox["\[Del]", "b"], 
+           InterpretationBox[
+            StyleBox[
+             SubsuperscriptBox["K", 
+              TemplateBox[{
+                StyleBox["1", ShowContents -> False, StripOnInput -> False]}, 
+               "RowDefault"], 
+              TemplateBox[{"c"}, "RowDefault"]], AutoSpacing -> False, 
+             ShowAutoStyles -> False], 
+            Apply[K, {$CellContext`uc}], Editable -> False]}, "RowDefault"], 
+         AutoSpacing -> False, ShowAutoStyles -> False], 
+        mGRG`STensor`CD[$CellContext`lb, 
+         K[$CellContext`uc]], Editable -> False]},
+      "RowDefault"],
+     ShowAutoStyles->False,
+     AutoSpacing->False],
+    mGRG`STensor`CD[$CellContext`la, 
+     mGRG`STensor`CD[$CellContext`lb, 
+      K[$CellContext`uc]]],
+    Editable->False]}], "+", 
+  RowBox[{"2", " ", 
+   InterpretationBox[
+    StyleBox[
+     SubsuperscriptBox["K", 
+      TemplateBox[{"d"},
+       "RowDefault"], 
+      TemplateBox[{
+        StyleBox["1", ShowContents -> False, StripOnInput -> False]},
+       "RowDefault"]],
+     ShowAutoStyles->False,
+     AutoSpacing->False],
+    Apply[K, {$CellContext`ld}],
+    Editable->False], " ", 
+   InterpretationBox[
+    StyleBox[
+     SubsuperscriptBox["R", 
+      TemplateBox[{"b", 
+        StyleBox["1", ShowContents -> False, StripOnInput -> False], "a", 
+        StyleBox["1", ShowContents -> False, StripOnInput -> False]},
+       "RowDefault"], 
+      TemplateBox[{
+        StyleBox["1", ShowContents -> False, StripOnInput -> False], "c", 
+        StyleBox["1", ShowContents -> False, StripOnInput -> False], "d"},
+       "RowDefault"]],
+     ShowAutoStyles->False,
+     AutoSpacing->False],
+    Apply[
+    mGRG`STensor`RiemannCD, {$CellContext`lb, $CellContext`uc, \
+$CellContext`la, $CellContext`ud}],
+    Editable->False]}]}]], "Output",
+ CellChangeTimes->{
+  3.8272952953146467`*^9, {3.8272953656098347`*^9, 3.827295387161084*^9}, 
+   3.916056620040745*^9, 3.9160578521046333`*^9, 3.951124826610676*^9, 
+   3.972296917122189*^9, 3.979898063785918*^9},
+ CellLabel->"Out[10]=",ExpressionUUID->"8a5f097d-5019-4633-8d1c-504147ded8ca"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"%", "//", "UpDnPair"}]], "Input",
+ CellChangeTimes->{{3.827295318772672*^9, 3.8272953945684175`*^9}},
+ CellLabel->"In[11]:=",ExpressionUUID->"e1d80b59-b6b0-4980-987e-646e0f55abd3"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"2", " ", 
+   InterpretationBox[
+    StyleBox[
+     TemplateBox[{
+       SubscriptBox["\[Del]", "a"], 
+       InterpretationBox[
+        StyleBox[
+         TemplateBox[{
+           SubscriptBox["\[Del]", "b"], 
+           InterpretationBox[
+            StyleBox[
+             SubsuperscriptBox["K", 
+              TemplateBox[{
+                StyleBox["1", ShowContents -> False, StripOnInput -> False]}, 
+               "RowDefault"], 
+              TemplateBox[{"c"}, "RowDefault"]], AutoSpacing -> False, 
+             ShowAutoStyles -> False], 
+            Apply[K, {$CellContext`uc}], Editable -> False]}, "RowDefault"], 
+         AutoSpacing -> False, ShowAutoStyles -> False], 
+        mGRG`STensor`CD[$CellContext`lb, 
+         K[$CellContext`uc]], Editable -> False]},
+      "RowDefault"],
+     ShowAutoStyles->False,
+     AutoSpacing->False],
+    mGRG`STensor`CD[$CellContext`la, 
+     mGRG`STensor`CD[$CellContext`lb, 
+      K[$CellContext`uc]]],
+    Editable->False]}], "+", 
+  RowBox[{"2", " ", 
+   InterpretationBox[
+    StyleBox[
+     SubsuperscriptBox["K", 
+      TemplateBox[{
+        StyleBox["1", ShowContents -> False, StripOnInput -> False]},
+       "RowDefault"], 
+      TemplateBox[{"d"},
+       "RowDefault"]],
+     ShowAutoStyles->False,
+     AutoSpacing->False],
+    Apply[K, {$CellContext`ud}],
+    Editable->False], " ", 
+   InterpretationBox[
+    StyleBox[
+     SubsuperscriptBox["R", 
+      TemplateBox[{"b", 
+        StyleBox["1", ShowContents -> False, StripOnInput -> False], "a", "d"},
+       "RowDefault"], 
+      TemplateBox[{
+        StyleBox["1", ShowContents -> False, StripOnInput -> False], "c", 
+        StyleBox["1", ShowContents -> False, StripOnInput -> False], 
+        StyleBox["1", ShowContents -> False, StripOnInput -> False]},
+       "RowDefault"]],
+     ShowAutoStyles->False,
+     AutoSpacing->False],
+    Apply[
+    mGRG`STensor`RiemannCD, {$CellContext`lb, $CellContext`uc, \
+$CellContext`la, $CellContext`ld}],
+    Editable->False]}]}]], "Output",
+ CellChangeTimes->{{3.8272953399954324`*^9, 3.8272953958187447`*^9}, 
+   3.916056629318676*^9, 3.9160578544394684`*^9, 3.9511248473162823`*^9, 
+   3.9722969319231987`*^9, 3.979898071988558*^9},
+ CellLabel->"Out[11]=",ExpressionUUID->"3318116f-db61-476a-aaec-1bd56967dcbb"]
+}, Open  ]],
+
+Cell[TextData[{
+ "Using the symmetries of Riemann tensor ",
+ Cell[BoxData[
+  FormBox[
+   TemplateBox[<|"boxes" -> FormBox[
+       RowBox[{
+         SubscriptBox[
+          StyleBox["R", "TI"], 
+          RowBox[{
+            StyleBox["a", "TI"], 
+            StyleBox["b", "TI"], 
+            StyleBox["c", "TI"], 
+            StyleBox["d", "TI"]}]], "\[LongEqual]", 
+         SubscriptBox[
+          StyleBox["R", "TI"], 
+          RowBox[{
+            StyleBox["c", "TI"], 
+            StyleBox["d", "TI"], 
+            StyleBox["a", "TI"], 
+            StyleBox["b", "TI"]}]], "\[LongEqual]", "-", 
+         SubscriptBox[
+          StyleBox["R", "TI"], 
+          RowBox[{
+            StyleBox["d", "TI"], 
+            StyleBox["c", "TI"], 
+            StyleBox["a", "TI"], 
+            StyleBox["b", "TI"]}]]}], TraditionalForm], "errors" -> {}, 
+     "input" -> "R_{abcd} = R_{cdab} = -R_{dcab}", "state" -> "Boxes"|>,
+    "TeXAssistantTemplate"], TraditionalForm]],ExpressionUUID->
+  "26e0ec48-c40c-4936-b0b5-bb40d8626aab"],
+ " we finally obtain"
+}], "Text",
+ CellChangeTimes->{{3.972296967831009*^9, 3.972297062191124*^9}, {
+  3.972297109820889*^9, 
+  3.972297111753428*^9}},ExpressionUUID->"ec7a00b7-0c80-46ae-afb4-\
+98a9bc2a67f6"],
+
+Cell[BoxData[
+ FormBox[
+  RowBox[{Cell[TextData[Cell[BoxData[
+    FormBox[
+     RowBox[{
+      RowBox[{
+       SubscriptBox["\[Del]", "a"], 
+       RowBox[{
+        SubscriptBox["\[Del]", "b"], 
+        SuperscriptBox["K", "c"]}]}], " ", "=", " ", 
+      RowBox[{
+       SuperscriptBox["K", "d"], 
+       SuperscriptBox[
+        SubscriptBox["R", 
+         RowBox[{"d", "\[InvisibleSpace]", "a", "\[InvisibleSpace]", "b"}]], 
+        "c"]}]}], TraditionalForm]],
+    CellChangeTimes->{{3.518921218317237*^9, 3.5189212445367374`*^9}, {
+      3.639132196693709*^9, 3.639132223685253*^9}, {3.639132350165487*^9, 
+      3.639132424565742*^9}, {3.6391324619098783`*^9, 3.639132531973885*^9}, {
+      3.639132586212988*^9, 3.639132591069265*^9}, 3.6391337712537684`*^9, {
+      3.6391338071338205`*^9, 3.6391338362934885`*^9}, {3.639134174645841*^9, 
+      3.639134220981491*^9}, {3.91605665503249*^9, 3.9160566608156986`*^9}},
+    TextAlignment->Center,ExpressionUUID->
+    "f4ddd012-98a6-bd4a-aba7-97b5f065c7c6"]],ExpressionUUID->
+    "1bd841c1-c74b-a64d-9657-c20c1017dfcc"], "."}], TraditionalForm]], "Text",
+ CellChangeTimes->{{3.518921218317237*^9, 3.5189212445367374`*^9}, {
+   3.639132196693709*^9, 3.639132223685253*^9}, {3.639132350165487*^9, 
+   3.639132424565742*^9}, {3.6391324619098783`*^9, 3.639132531973885*^9}, {
+   3.639132586212988*^9, 3.639132591069265*^9}, 3.6391337712537684`*^9, {
+   3.6391338071338205`*^9, 3.6391338362934885`*^9}, {3.639134174645841*^9, 
+   3.639134220981491*^9}, {3.91605665503249*^9, 3.916056670120613*^9}, {
+   3.916057899714138*^9, 3.9160579228962917`*^9}, {3.9798981143393793`*^9, 
+   3.979898144027102*^9}},
+ TextAlignment->Center,ExpressionUUID->"038c8ae1-e11f-4e68-9a33-15841452d39e"]
+}, Closed]]
+}, Open  ]]
+},
+WindowSize->{922, 960},
+WindowMargins->{{Automatic, 393}, {1, Automatic}},
+PrintingCopies->1,
+PrintingPageRange->{1, Automatic},
+FrontEndVersion->"14.3 \:c758 Mac OS X ARM (64-bit) (July 8, 2025)",
+StyleDefinitions->FrontEnd`FileName[{"Report"}, "StandardReport.nb", 
+  CharacterEncoding -> "UTF-8"],
+ExpressionUUID->"8dc1051b-e9c5-40f9-a458-a12f12f838d6"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[545, 20, 352, 5, 50, "Input",ExpressionUUID->"363b0d83-6913-4cb6-824a-fa1da5631042"],
+Cell[CellGroupData[{
+Cell[922, 29, 196, 3, 85, "Title",ExpressionUUID->"780118de-8f68-4496-8333-8e079f48fdbc"],
+Cell[CellGroupData[{
+Cell[1143, 36, 210, 3, 50, "Input",ExpressionUUID->"4b7214a2-9794-48cf-b3c6-4fd208d2eff2"],
+Cell[1356, 41, 153, 2, 50, "Output",ExpressionUUID->"6a04e490-fdf7-4ba4-8fec-8f7ab21195a6"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[1546, 48, 167, 3, 66, "Subsection",ExpressionUUID->"2e2d06c4-d7cd-4604-b3c7-67938f7f8c3a"],
+Cell[1716, 53, 285, 5, 50, "Input",ExpressionUUID->"6eba2503-c3ef-4379-8afd-95bbb417c49f"],
+Cell[CellGroupData[{
+Cell[2026, 62, 452, 9, 101, "Input",ExpressionUUID->"bd38ff5c-6bb1-4b60-8f8e-d931d3ec7816"],
+Cell[2481, 73, 1113, 25, 50, "Output",ExpressionUUID->"70f46f58-68d8-47a6-9396-415e541ad55e"],
+Cell[3597, 100, 2570, 72, 50, "Output",ExpressionUUID->"f775e3ab-1ce4-448b-b035-72f464746665"],
+Cell[6170, 174, 1582, 42, 50, "Output",ExpressionUUID->"8d586a13-0e1a-4d1b-90d6-62cfb75ad682"]
+}, Open  ]],
+Cell[7767, 219, 1279, 24, 41, "Text",ExpressionUUID->"5d72cefe-0766-4f52-8ff2-ca267d37058b"]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[9083, 248, 180, 3, 45, "Subsection",ExpressionUUID->"bae08108-68ad-4c3a-ae24-3ea395861113"],
+Cell[9266, 253, 225, 4, 41, "Text",ExpressionUUID->"353c23a9-37b2-4628-8889-78940c6b3fa7"],
+Cell[CellGroupData[{
+Cell[9516, 261, 823, 17, 50, "Input",ExpressionUUID->"67aefaa8-24d1-4972-8a94-8a12754c602a"],
+Cell[10342, 280, 3322, 90, 50, "Output",ExpressionUUID->"095cc75d-1f50-465b-b78b-dd3d7781836e"]
+}, Open  ]],
+Cell[13679, 373, 318, 5, 41, "Text",ExpressionUUID->"a3643482-17ef-4fe7-90b1-f30f4d5641ff"],
+Cell[CellGroupData[{
+Cell[14022, 382, 715, 16, 50, "Input",ExpressionUUID->"d51fbefa-e444-4ddb-93f0-89a11884c7bf"],
+Cell[14740, 400, 3258, 88, 50, "Output",ExpressionUUID->"01bcaccb-a7ab-4959-b238-8bdfe334d38e"]
+}, Open  ]],
+Cell[18013, 491, 517, 17, 41, "Text",ExpressionUUID->"4c9bc6fd-0f27-45fc-8086-a8d3b753d0c0"],
+Cell[CellGroupData[{
+Cell[18555, 512, 640, 17, 50, "Input",ExpressionUUID->"40702c5a-34aa-4f95-8ce1-28567acb32a5"],
+Cell[19198, 531, 4304, 123, 50, "Output",ExpressionUUID->"79ce4b46-a3b6-4bc5-ba0f-2413feb2ae6a"]
+}, Open  ]],
+Cell[23517, 657, 626, 18, 41, "Text",ExpressionUUID->"4f76692a-3c3d-4076-bad4-cad2c0781a28"],
+Cell[CellGroupData[{
+Cell[24168, 679, 681, 16, 101, "Input",ExpressionUUID->"8ed23187-7f66-4fe6-8eee-f99cead9a97e"],
+Cell[24852, 697, 2407, 64, 50, "Output",ExpressionUUID->"97a2e8ca-b008-4b42-9e77-7f09bf5e870a"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[27296, 766, 353, 8, 50, "Input",ExpressionUUID->"2e7f0f0b-8564-42c1-8441-7a48f54844be"],
+Cell[27652, 776, 2332, 64, 50, "Output",ExpressionUUID->"8a5f097d-5019-4633-8d1c-504147ded8ca"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[30021, 845, 204, 3, 50, "Input",ExpressionUUID->"e1d80b59-b6b0-4980-987e-646e0f55abd3"],
+Cell[30228, 850, 2311, 63, 50, "Output",ExpressionUUID->"3318116f-db61-476a-aaec-1bd56967dcbb"]
+}, Open  ]],
+Cell[32554, 916, 1239, 35, 41, "Text",ExpressionUUID->"ec7a00b7-0c80-46ae-afb4-98a9bc2a67f6"],
+Cell[33796, 953, 1727, 33, 41, "Text",ExpressionUUID->"038c8ae1-e11f-4e68-9a33-15841452d39e"]
+}, Closed]]
+}, Open  ]]
+}
+]
+*)
+

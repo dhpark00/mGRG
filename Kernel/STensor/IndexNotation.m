@@ -827,10 +827,21 @@ GStoString[gs_GenSet, len_Integer] := toPermWeightStr[List @@ gs, len]
    See pairQabsorb, putMetricObject, combTwoIndices. *)
 KindOf[Kdelta[idx1_, idx2_], idx_] := If [MemberQ[{idx1, idx2}, idx], IndexToKind[idx], All]
 KindOf[(oName_?IndexedOperandQ)[indices___], idx_] :=
-    With[{pos = Position[{indices}, idx]},
-        If [pos =!= {}, KindOf[oName, First @ Flatten @ pos],
-        (* else *)      KindOf[oName]]  (* when not in *)
+    With[{pos = Position[{indices}, idx], len = Length[{indices}], rank = getRank[oName]},
+        If [DiffFormQ[oName],
+            If [len == getDegree[oName] + rank,                                            (* FtoC of p-form *)
+                getKindOf[oName, pos],
+            (* else *)
+                If [len == rank && pos =!= {}, getKindOf[oName, getDegree[oName] + pos]],  (* indexed p-form *)
+                (* else *) KindOf[oName]                                                   (* illegal indices *)
+            ],
+        (* else *)
+            getKindOf[oName, pos]
+        ]
     ]
+
+    getKindOf[oName_, pos_] := If [pos =!= {}, KindOf[oName, First @ Flatten @ pos],
+                               (* else *)      KindOf[oName]]  (* when not in *)
 
 (* Retruns the kind of indexed objects: (Kdelta, BD), (Epsilon, Metricg, Torsion, CD), and LD-type are special
    NB: KindOf[opName, arg]에서 arg는 LD-type 연산자에 대해서만 의미 있음. *)
@@ -843,7 +854,7 @@ KindOf[Epsilon, __]       := DefaultKind
 KindOf[Metricg, __]       := DefaultKind
 KindOf[Torsion, __]       := DefaultKind
 KindOf[CD,      idx_]     := If [RegularIndexQ[idx] && IndexToKind[idx] =!= DefaultKind, NonKind, DefaultKind]
-KindOf[oName_?IndexedOperandQ, pos_Integer?Positive] :=
+KindOf[oName_?IndexedOperandQ, pos_Integer?Positive] :=  (* (2026.02.23): DiffForm의 경우 'KindOf[oName[indices], idx]' 형태의 함수를 사용해야 함. *)
     With [{kindL = getKindL[oName],
            len = If [DiffFormQ[oName], getDegree[oName] + getRank[oName],
                  (* else *)            getRank[oName]]},
@@ -1253,8 +1264,7 @@ indicesOf[___]                                    := {}
                                 indexL
                             ]},
 
-                        (* TODO: check throughly when DiffFormQ[oName] *)
-                        Select[newIdxL, ValidIndexQ[#, KindOf[oName, First @ Flatten @ Position[{indices}, #]]]&]
+                        Select[newIdxL, ValidIndexQ[#, KindOf[oName[indices], #]]&]  (* 2026.02.23: oName이 DiffForm인 경우에 대한 처리 *)
                     ]
                 ]
             ]
@@ -1815,7 +1825,7 @@ checkObject[oName_?IndexedOperandQ, aIndexL_List, withMsg_:False] :=
                     (* check validity and dn/up states for each index *)
                     Do[
                         With[{kind = If [DiffFormQ[oName] && len > nRank,
-                                         If [i > len - nRank, KindOf[oName, i - (len - nRank)],
+                                         If [i > len - nRank, KindOf[oName, i],
                                          (* else *)           DefaultKind],
                                      (* else *)
                                          KindOf[oName, i]
@@ -1825,7 +1835,7 @@ checkObject[oName_?IndexedOperandQ, aIndexL_List, withMsg_:False] :=
 
                             If [!MetricSpaceQ[kind],
                                 With[{dnup = If [DiffFormQ[oName] && len > nRank,
-                                                 If [i > len - nRank, DnupAt[oName, i - (len - nRank)],
+                                                 If [i > len - nRank, DnupAt[oName, i],
                                                  (* else *)           -1],
                                              (* else *)
                                                  DnupAt[oName, i]

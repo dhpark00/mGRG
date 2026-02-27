@@ -16,7 +16,7 @@ Options[InitCTensorNP] = {SimplifyMore -> False, InitCTensor -> False}
 
 InitCTensorNP[coSys_ /; VectorQ[coSys, AtomQ], nullVectors_?SquareMatrixQ, opts:OptionsPattern[]] := (
         If [mGRG`STensor`Private`flagTable[InitCTensorFlag] && (OptionValue[InitCTensor] =!= True),
-            Message[Msg::warn, "CTensor is already initialized.", "Use InitCTensor -> True option if you want to re-initialize CTensor, or ClearCTensorNP[] to clear CTensor.", "", ""]; Return[]
+            Message[Msg::warn, "CTensor is already initialized.", "Use InitCTensor -> True option to re-initialize CTensor.", "", ""]; Return[]
         ];
 
         If [!TorsionFreeQ[CD], Message[Msg::warn, "NP formalism requires torsion-free connection.", "", "", ""]; Return[$Failed]];
