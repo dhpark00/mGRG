@@ -1,9 +1,9 @@
 PacletObject[
   <|
     "Name" -> "mGRG",
-    "Version" -> "2025.12",
+    "Version" -> "2026.2.28",
     "Creator" -> "Park, Dal-Ho",
-    "Description" -> "Tensor Calculus Packages for General Relativity and Gravitation",
+    "Description" -> "Tensor Calculus Package for General Relativity and Gravitation",
     "Extensions" -> {
       {
         "Kernel", 
