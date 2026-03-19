@@ -33,3 +33,7 @@ Wolfram 언어로 구현한 인덱스를 갖는 (`General Relativity and Gravita
       2. Mathematica에서
 
             `PacletInstall["복사한 링크 주소 붙여넣기"]`
+
+# License
+
+이 패키지는 학술 및 연구 목적으로 자유롭게 사용할 수 있습니다.

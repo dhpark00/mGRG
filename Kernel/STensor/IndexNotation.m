@@ -649,7 +649,6 @@ ValidIndicesQ[___] := False
     ObjectQ |- IndexedObjectQ |- IndexedOperatorQ
             |                 |- IndexedOperandQ  |- IndexedTensorQ
             |                                     |- DiffFormQ
-            |                                     |- IndexedSpinorQ (TODO: QFT using ToCanonical)
             |                                     |- IndexedSymbolQ (TODO: Symbolize and colourize)
             |
             |- ScalarFunctionQ
@@ -917,6 +916,9 @@ defineOperand[oName_, permS_String, kindL_List, dnupL_List, oType_, OptionsPatte
                 (* Objects with dnupL == {} are special. Otherwise, Length[modKindL] === Length[modDnupL] *)
                 If [modDnupL =!= {} && Length[modDnupL] =!= 1,
                     With[{errnum = checkSymKindDnup[gs, nRank, modKindL, modDnupL]},
+                        (* For Fdefine[omega[la, ua], 1, "-ba"], if MetricSpaceQ[Latin], it is OK. *)
+                        If [errnum === -2 && AllTrue[modKindL, MetricSpaceQ], Return[0]];
+
                         Which[
                             errnum === -1, Message[Msg::err, "incompatible between", permS, "and", modKindL],
                             errnum === -2, Message[Msg::err, "incompatible between", permS, "and", modDnupL],

@@ -12,8 +12,7 @@
   - g^bd LD[v, R[a,b,c,d]] =!= LD[v, R[a,c]] because LD[v, g^bd] =!= 0 in general.
     This is so because LD[v, T[a,b,c]] =!= (LD[v, T])[a,b,c].
   - Use SetDelayed when DefaultKind lies in RHS. (NB: DefaultKind can be changed by SetDefaultKind[])
-  - Tsimplify (i.e., TensorReduce) is only for symmetric metrics.
-    Consider ToCanonical for simplifying expressions with anti-symmetric metrics.
+  - Tsimplify is only for symmetric metrics.
   - The type of indexed objects are defined by its shape (index-kinds and updns). See KindOf[].
     For an example
         ymF: {{Latin,-1}, {Latin,-1}, {Greek,+1}}
@@ -309,7 +308,7 @@ ApplyXD::usage     = "ApplyXD[expr] explicitly applies the exterior derivative X
 CollectForm::usage = "CollectForm[expr] collects terms in an expression that have the same differential form part, similar to how Collect works for standard algebraic expressions."
 DegreeForm::usage  = "DegreeForm[expr] returns the degree of a differential form expression. It correctly computes the degree for base forms, exterior products (XP), exterior derivatives (XD), interior products (IP), Hodge duals (HodgeStar), and codifferentials (CoXD)."
 ZeroDegreeQ::usage = "ZeroDegreeQ[expr] returns True if 'expr' is a 0-form (a scalar) or not a differential form expression, and False otherwise."
-FtoC::usage        = "FtoC[expr, {indices}] converts a differential form expression 'expr' into its corresponding antisymmetric indexed-tensor representation. The number of provided 'indices' must match the degree of the form."
+FtoC::usage        = "FtoC[expr] or FtoC[expr, {indices}] converts a differential form expression 'expr' into its corresponding antisymmetric indexed-tensor representation."
 
 CoordRep::usage = "CoordRep[form, coSys] gives the coordinate representation of the differential 'form' using the coordinate system 'coSys'.\nCoordRep[form, n] gives the representation in a generic n-dimensional space, with the dimension defaulting to that of the Latin kind."
 

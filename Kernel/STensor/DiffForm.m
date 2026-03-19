@@ -151,7 +151,7 @@ defineOperator[XP, "", XP]
           In Ver. 6, Wedge is in System` *)
 If [$VersionNumber >= 6.0, Wedge[a_, b__] := XP[a, b] /; FreePatternQ[{a, b}] && !AllTrue[{a, b}, freeFormQ]]
 
-(* for formatting operator XP *)
+(* formatting operator XP *)
 XP/: MakeBoxes[XP[arg1_, args__], StandardForm] := interpretBox[XP[arg1, args],
         TemplateBox[
             MakeBoxes[#, StandardForm]& /@ (Flatten @ Fold[List[#1, "\[Wedge]", #2]&, arg1, {args}]),
@@ -163,7 +163,12 @@ XP/: MakeBoxes[XP[arg1_, args__], StandardForm] := interpretBox[XP[arg1, args],
 XP[expr_]                           := expr /; FreePatternQ[expr]
 XP[pre___, expr_Plus,  post___]     := Map[XP[pre, #, post] &, expr] /; FreePatternQ[{pre, expr, post}]
 XP[pre___, expr_Times, post___]     := XP[pre, Sequence @@ expr, post] /; FreePatternQ[{pre, expr, post}]
+(* comment out due to ftocRec
 XP[pre___, XP[args__], post___]     := XP[pre, args, post] /; FreePatternQ[{pre, args, post}]
+
+(2026.03.20) XP 표현을 단순화하기 위한 규칙을 따로 설정:
+XPsimpRules = {XP[pre___, XP[args__], post___] :> XP[pre, args, post] /; FreePatternQ[{pre, args, post}]};
+*)
 XP[]                                := 1
 XP[pre___, a_, post___]             := a * XP[pre, post] /; FreePatternQ[{pre, a, post}] && ZeroDegreeQ[a]
 XP[args__]                          := 0 /; FreePatternQ[{args}] && PositiveIntegerQ[GetDimension[DefaultKind]] && (Plus @@ Map[DegreeForm, {args}]) > GetDimension[DefaultKind]
@@ -213,7 +218,9 @@ IP[v_, IP[v_, expr_]]    := 0 /; FreePatternQ[{v, expr}] && vectorNameQ[v] && De
 IP[v_, expr_Plus]        := Map[IP[v, #]&, expr] /; FreePatternQ[{v, expr}]
 IP[v_, a_ * expr_]       := a IP[v, expr] /; FreePatternQ[{v, expr}] && ZeroDegreeQ[a] && DegreeForm[expr] >= 1
 IP[v_, XP[pre_, post__]] := XP[IP[v, pre], post] + (-1)^DegreeForm[pre] XP[pre, IP[v, post]] /; FreePatternQ[{v, pre, post}] && vectorNameQ[v]
-
+(*
+IP[v_, expr_] := If [DegreeForm[expr] == 0, ErrorT[IP[v, expr]]]
+*)
 
 (*** exterior derivative ***)
 defineOperator[XD, "d", XD]
@@ -375,10 +382,147 @@ splitForm[expr_]           := {expr, 1}
 
 (***** FtoC *****)
 
-FtoC[expr_Equal, arg_]                                 := FtoC[#, arg]& /@ expr
-FtoC[expr_, {}]                                        := fToC[Dum @ expr, {}]
-FtoC[expr_, indexL:{(_Symbol | _String | _Integer)..}] := fToC[Dum @ expr, indexL] /; DeleteDuplicates[IndexToKind /@ indexL] === {DefaultKind}
-FtoC[___] := Message[FtoC::usage]
+(*****************************************************************************)
+(**************************** with Gemini 3.1 ********************************)
+(*****************************************************************************)
+
+(***** 1. DegreeForm[expr] => degree of expr *****)
+
+(***** 2. AntisymmetrizeIndices: 완전 반대칭화(Totally Antisymmetric) *****)
+
+(***** 3. 재귀적 FtoC 마스터 함수 (외부 호출용) *****)
+FtoC[expr_Plus] := FtoC /@ expr;
+FtoC[expr_] :=
+    With[{rcExpr = ExpandObject[expr], n = GetDimension[DefaultKind]},
+        If [!FreeQ[rcExpr, HodgeStar], If [!PositiveIntegerQ[n], Message[Msg::err, "Need to SetDimension[]","", "", ""]; Return[$Failed]]];
+
+        If [Head[rcExpr] === Plus,
+            FtoC /@ rcExpr,
+        (* else *) (* a term *)
+            With[{idxL = FindIndicesAll[rcExpr, IndexQs -> {KindIndexQ[DefaultKind]}]},  (* all indices of the "term" (including non-zero rank diff. forms *)
+                Module[{p = DegreeForm[rcExpr], dnL},
+(* comment out
+                    If[p == 0, Return[rcExpr]];
+*)
+
+                    (* DefaultKind의 dn-인덱스를 idxL을 고려하여 자동 생성 *)
+                    dnL = Complement[SymbolJoin["l", #]& /@ getCharacters[DefaultKind], ToDnIndex /@ idxL];
+                    If [p > Length[dnL], Message[Msg::err, "Too few available indices: ", dnL, "", ""]; Return[$Failed]];
+
+                    ftocRec[rcExpr, Take[dnL, p]]
+                ]
+            ]
+        ]
+    ];
+
+(************************************************************************)
+(* [ FtoC Recursive Engine ]
+   참고: 이 블록의 '재귀적 지표 분배(Recursive Distribution)' 알고리즘은
+   xAct 패키지의 xForm 모듈이 사용하는 파싱 아키텍처를 STensor에 이식한 것임.        *)
+(************************************************************************)
+
+(* 사용자가 수동으로 인덱스 리스트를 지정하고 싶을 때의 오버로딩: 수동으로 입력된 인덱스의 정당성은 <확인하지 않음>. *)
+FtoC[expr_, dnL_List] := ftocRec[expr, dnL];
+
+(***** 4. ftocRec 재귀 분배 로직 (Recursive Logic) *****)
+
+(* 선형성 (Plus 분배) *)
+ftocRec[expr_Plus, dnL_List] := ftocRec[#, dnL] & /@ expr;
+
+(* 스칼라 곱 (0-form은 독립적으로 FtoC) *)
+ftocRec[f_ * A_, dnL_List] /; DegreeForm[f] == 0 := FtoC[f] * ftocRec[A, dnL];
+
+(* XD *)
+ftocRec[XD[A_], dnL_List] :=
+    With[{derOp = If[TorsionFreeQ[CD] && flagTable[XDtoCDfrag], CD, BD]},
+        Length[dnL] * TindexSort @ AntisymmetrizeIndices[ derOp[ dnL[[1]], ftocRec[A, Rest[dnL]] ], dnL ]
+    ];
+
+(* XP (2항) *)
+ftocRec[XP[A_, B_], dnL_List] :=
+    Module[{p = DegreeForm[A], q = DegreeForm[B], idxA, idxB},
+        idxA = Take[dnL, p];
+        idxB = Drop[dnL, p];
+        (Factorial[p + q] / (Factorial[p] * Factorial[q])) * TindexSort @ AntisymmetrizeIndices[ ftocRec[A, idxA] * ftocRec[B, idxB], dnL ]
+    ];
+
+(* XP (다항 결합: XP[A,B,C,...] -> XP[A, XP[B,C,...]]) *)
+ftocRec[XP[A_, B_, CC__], dnL_List] := ftocRec[XP[A, XP[B, CC]], dnL];
+
+(* Base Case: 단일 텐서에 도달하면 STensor 규칙대로 폼 지표를 맨 앞에 삽입 *)
+ftocRec[A_Symbol[],       {}]       := A;
+ftocRec[A_Symbol[idx___], dnL_List] := A[Sequence @@ dnL, idx];
+ftocRec[A_Symbol,         {}]       := A;
+ftocRec[A_Symbol,         dnL_List] := A[Sequence @@ dnL];
+
+(*****************************************************************************)
+(*****************************************************************************)
+(*****************************************************************************)
+
+(* 나머지 표현들 *)
+ftocRec[LD[v_, f_],    {}]   := With[{pair = NewDummy[]}, v[pair[[2]]] CD[pair[[1]], f]] /; vectorNameQ[v] && ZeroDegreeQ[f];
+ftocRec[LD[v_, expr_], dnL_List] := LD[v, ftocRec[expr, dnL]] /; dnL =!= {};
+ftocRec[IP[v_, expr_], dnL_List] :=
+    If [DegreeForm[expr] == 0,
+        IP[v, expr],  (* wrong operation *)
+    (* else *)
+        With[{pair = NewDummy[]},
+            With[{idxL = Prepend[dnL, pair[[1]]]},
+                v[pair[[2]]] * (TindexSort @ AntisymmetrizeIndices[ ftocRec[expr, idxL], idxL ])
+            ]
+        ]
+    ];
+
+ftocRec[HodgeStar[expr_], dnL_List] :=
+    Module[{n = GetDimension[DefaultKind], p, downL, upL, freeL},
+        If [!PositiveIntegerQ[n], Message[Msg::err, "Need to SetDimension[]","", "", ""]; Return[HodgeStar[expr]]];
+
+        p = DegreeForm[expr];
+        If [Length[dnL] =!= n - p, Message[Msg::err, "invalid number of indices", dnL, "for", HodgeStar[expr]]; Return[$Failed]];
+
+        If [p === 0,
+            dualStarFtoC[ ftocRec[expr, {}], dnL ],
+        (* else *)
+            {downL, upL} = Transpose @ Table[NewDummy[], p];
+            dualStarFtoC[ ftocRec[expr, downL], Join[upL, dnL]]
+        ]
+    ];
+ftocRec[CoXD[expr_], dnL_List] :=
+    With[{pair = NewDummy[]},
+        -CD[pair[[2]], ftocRec[expr, Prepend[dnL, pair[[1]]]]]
+    ];
+ftocRec[expr_, __] := expr  (* any others *)
+
+    (* cf: DualStar[expr, indexL] 함수의 indexL은 eps 인덱스의 일부분이지만, dualStarFtoC[expr, indexL] 함수의 indexL은 eps 인덱스의 전부. *)
+    dualStarFtoC[expr_, indexL_] :=
+        With[{rcExpr = ExpandObject[Dum[expr]]},
+            With[{tmpTerm = If [Head[rcExpr] === Plus, rcExpr[[1]], rcExpr], n = GetDimension[DefaultKind]},
+                If [Length[indexL] < 2 || (PositiveIntegerQ[n] && Length[indexL] =!= n),
+                    Message[Msg::err, "Invalid numbers of indices: ", indexL, "", ""]; Return[]
+                ];
+
+                (* $FormDropIndices -> True for non-zero rank diff. forms *)
+                With[{freeL = Select[FindFreeTensorialIndicesAll[tmpTerm, IndexQs -> {KindIndexQ[DefaultKind]}, $FormDropIndices -> True],
+                                     (DnIndexQ[#] || UpIndexQ[#])&]},
+
+                    If [PositiveIntegerQ[n] && Length[freeL] > n,
+                        Message[Msg::err, "Invalid numbers of free indices: ", freeL, "", ""]; Return[]
+                    ];
+
+                    If [freeL =!= {} && (Intersection[freeL, indexL] =!= {} || Intersection[FlipIndex /@ freeL, indexL] === {}),
+                        Message[Msg::err, "Ill-formed indices: ", indexL, "", ""]; Return[]
+                    ];
+
+                    With[{eps = GetEpsilon[DefaultKind]},
+                        (1/Length[freeL]!) * rcExpr * eps[Sequence @@ indexL]
+                    ]
+                ]
+            ]
+        ];
+
+(*****************************************************************************)
+(********************** old version (to be deleted) **************************)
+(*****************************************************************************)
 
     fToC[expr_, indexL_List] :=
         With[{rcExpr = ExpandObject[expr], n = GetDimension[DefaultKind]},
@@ -467,33 +611,49 @@ FtoC[___] := Message[FtoC::usage]
                 ]
             f2cObject[expr_, _, _] := expr
 
-                (* cf: DualStar[expr, indexL] 함수의 indexL은 eps 인덱스의 일부분이지만
-                   dualStarFtoC[expr, indexL] 함수의 indexL은 eps 인덱스의 전부. *)
-                dualStarFtoC[expr_, indexL_] :=
-                    With[{rcExpr = ExpandObject[Dum[expr]]},
-                        With[{tmpTerm = If [Head[rcExpr] === Plus, rcExpr[[1]], rcExpr], n = GetDimension[DefaultKind]},
-                            If [Length[indexL] < 2 || (PositiveIntegerQ[n] && Length[indexL] =!= n),
-                                Message[Msg::err, "Invalid numbers of indices: ", indexL, "", ""]; Return[]
-                            ];
+(*****************************************************************************)
+(*****************************************************************************)
+(*****************************************************************************)
 
-                            (* $FormDropIndices -> True for non-zero rank diff. forms *)
-                            With[{freeL = Select[FindFreeTensorialIndicesAll[tmpTerm, IndexQs -> {KindIndexQ[DefaultKind]}, $FormDropIndices -> True],
-                                                 (DnIndexQ[#] || UpIndexQ[#])&]},
+(*****************************************************************************)
+(********************* CtoF by Gemini 3.1 (incomplete) ***********************)
+(*****************************************************************************)
 
-                                If [PositiveIntegerQ[n] && Length[freeL] > n,
-                                    Message[Msg::err, "Invalid numbers of free indices: ", freeL, "", ""]; Return[]
-                                ];
+CtoF[expr_] := expr //. {
+        (*=========================================================*)
+        (* [우선순위 1순위] 3항 규칙: 가장 먼저 매칭되어야 함 *)
+        (*=========================================================*)
+        (* 규칙 1: 2-form XD (3항 대칭) *)
+        c1_. * op1_[mu_?formIdxQ, A_[nu_?formIdxQ, rho_?formIdxQ, idxA___]]
+        + c2_. * op2_[nu_?formIdxQ, A_[mu_?formIdxQ, rho_?formIdxQ, idxA___]]
+        + c3_. * op3_[rho_?formIdxQ, A_[mu_?formIdxQ, nu_?formIdxQ, idxA___]] /; (c1 == -c2 == c3) && (op1 === op2 === op3) && (op1 === BD || op1 === CD)
+            :> c1 * XD[A[idxA]],
 
-                                If [freeL =!= {} && (Intersection[freeL, indexL] =!= {} || Intersection[FlipIndex /@ freeL, indexL] === {}),
-                                    Message[Msg::err, "Ill-formed indices: ", indexL, "", ""]; Return[]
-                                ];
+        (* 규칙 2: 1-form과 2-form의 XP (3항 대칭) *)
+        c1_. * A_[mu_?formIdxQ, idxA___] * B_[nu_?formIdxQ, rho_?formIdxQ, idxB___]
+        + c2_. * A_[nu_?formIdxQ, idxA___] * B_[mu_?formIdxQ, rho_?formIdxQ, idxB___]
+        + c3_. * A_[rho_?formIdxQ, idxA___] * B_[mu_?formIdxQ, nu_?formIdxQ, idxB___] /; (c1 == -c2 == c3)
+            :> c1 * XP[A[idxA], B[idxB]],
 
-                                With[{eps = GetEpsilon[DefaultKind]},
-                                    (1/Length[freeL]!) * rcExpr * eps[Sequence @@ indexL]
-                                ]
-                            ]
-                        ]
-                    ]
+        (*=========================================================*)
+        (* [우선순위 2순위] 2항 규칙: 3항 매칭이 실패한 후 작동 *)
+        (*=========================================================*)
+        (* 규칙 3: 1-form 외미분 (2항 반대칭) *)
+        c1_. * op1_[mu_?formIdxQ, A_[nu_?formIdxQ, idxA___]]
+        + c2_. * op2_[nu_?formIdxQ, A_[mu_?formIdxQ, idxA___]] /; (c1 == -c2) && (op1 === op2) && (op1 === BD || op1 === CD)
+            :> c1 * XD[A[idxA]],
+
+        (* 규칙 4: 1-form 쐐기곱 (2항 반대칭) *)
+        c1_. * A_[mu_?formIdxQ, idxA___]*B_[nu_?formIdxQ, idxB___]
+        + c2_. * A_[nu_?formIdxQ, idxA___] * B_[mu_?formIdxQ, idxB___] /; (c1 == -c2)
+            :> c1 * XP[A[idxA], B[idxB]]
+    };
+
+    formIdxQ[idx_] := KindIndexQ[DefaultKind][idx];
+
+(*****************************************************************************)
+(*****************************************************************************)
+(*****************************************************************************)
 
 (***** CoordRep *****)
 
