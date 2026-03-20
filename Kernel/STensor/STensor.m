@@ -312,6 +312,8 @@ FtoC::usage        = "FtoC[expr] or FtoC[expr, {indices}] converts a differentia
 
 CoordRep::usage = "CoordRep[form, coSys] gives the coordinate representation of the differential 'form' using the coordinate system 'coSys'.\nCoordRep[form, n] gives the representation in a generic n-dimensional space, with the dimension defaulting to that of the Latin kind."
 
+XPflattenRules::usage = "XPflattenRules is a list of transformation rules that flattens nested exterior products XP."
+
 (* Flags *)
 XDtoCDfrag::usage = "A flag that, when On, allows the exterior derivative XD to be converted into the default covariant derivative CD during tensor conversion via ToTensor, provided the connection is torsion-free. If Off, it is converted to the basis derivative BD."
 

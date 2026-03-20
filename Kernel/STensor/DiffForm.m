@@ -165,10 +165,10 @@ XP[pre___, expr_Plus,  post___]     := Map[XP[pre, #, post] &, expr] /; FreePatt
 XP[pre___, expr_Times, post___]     := XP[pre, Sequence @@ expr, post] /; FreePatternQ[{pre, expr, post}]
 (* comment out due to ftocRec
 XP[pre___, XP[args__], post___]     := XP[pre, args, post] /; FreePatternQ[{pre, args, post}]
-
-(2026.03.20) XP 표현을 단순화하기 위한 규칙을 따로 설정:
-XPsimpRules = {XP[pre___, XP[args__], post___] :> XP[pre, args, post] /; FreePatternQ[{pre, args, post}]};
 *)
+(* (2026.03.20) XP 표현을 단순화하기 위한 규칙을 따로 설정: *)
+XPflattenRules = {XP[pre___, XP[args__], post___] :> XP[pre, args, post] /; FreePatternQ[{pre, args, post}]};
+
 XP[]                                := 1
 XP[pre___, a_, post___]             := a * XP[pre, post] /; FreePatternQ[{pre, a, post}] && ZeroDegreeQ[a]
 XP[args__]                          := 0 /; FreePatternQ[{args}] && PositiveIntegerQ[GetDimension[DefaultKind]] && (Plus @@ Map[DegreeForm, {args}]) > GetDimension[DefaultKind]
