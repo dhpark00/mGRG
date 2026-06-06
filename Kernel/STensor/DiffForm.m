@@ -382,15 +382,7 @@ splitForm[expr_]           := {expr, 1}
 
 (***** FtoC *****)
 
-(*****************************************************************************)
-(**************************** with Gemini 3.1 ********************************)
-(*****************************************************************************)
-
-(***** 1. DegreeForm[expr] => degree of expr *****)
-
-(***** 2. AntisymmetrizeIndices: 완전 반대칭화(Totally Antisymmetric) *****)
-
-(***** 3. 재귀적 FtoC 마스터 함수 (외부 호출용) *****)
+(***** 재귀적 FtoC 마스터 함수 (외부 호출용) *****)
 FtoC[expr_Plus] := FtoC /@ expr;
 FtoC[expr_] :=
     With[{rcExpr = ExpandObject[expr], n = GetDimension[DefaultKind]},
@@ -415,6 +407,10 @@ FtoC[expr_] :=
         ]
     ];
 
+(*****************************************************************************)
+(**************************** with Gemini 3.1 ********************************)
+(*****************************************************************************)
+
 (************************************************************************)
 (* [ FtoC Recursive Engine ]
    참고: 이 블록의 '재귀적 지표 분배(Recursive Distribution)' 알고리즘은
@@ -424,7 +420,7 @@ FtoC[expr_] :=
 (* 사용자가 수동으로 인덱스 리스트를 지정하고 싶을 때의 오버로딩: 수동으로 입력된 인덱스의 정당성은 <확인하지 않음>. *)
 FtoC[expr_, dnL_List] := ftocRec[expr, dnL];
 
-(***** 4. ftocRec 재귀 분배 로직 (Recursive Logic) *****)
+(***** ftocRec 재귀 분배 로직 (Recursive Logic) *****)
 
 (* 선형성 (Plus 분배) *)
 ftocRec[expr_Plus, dnL_List] := ftocRec[#, dnL] & /@ expr;
@@ -519,101 +515,6 @@ ftocRec[expr_, __] := expr  (* any others *)
                 ]
             ]
         ];
-
-(*****************************************************************************)
-(********************** old version (to be deleted) **************************)
-(*****************************************************************************)
-
-    fToC[expr_, indexL_List] :=
-        With[{rcExpr = ExpandObject[expr], n = GetDimension[DefaultKind]},
-            If [!FreeQ[rcExpr, HodgeStar], If [!PositiveIntegerQ[n], Message[Msg::err, "Need to SetDimension[]","", "", ""]; Return[]]];
-            If [PositiveIntegerQ[n], If [Length[indexL] > n, Message[Msg::err, "Invalid numbers of indices: ", indexL, "", ""]; Return[]]];
-
-            With[{term = If [Head[rcExpr] === Plus, rcExpr[[1]], rcExpr]},
-            	With[{freeL = FindFreeTensorialIndicesAll[term, IndexQs -> {KindIndexQ[DefaultKind]}]},  (* all free indices of the "term" (including non-zero rank diff. forms *)
-            		If [Intersection[Join[freeL, FlipIndex /@ freeL], indexL] =!= {},
-                		Message[Msg::err, "invalid indices: ", indexL, "for free indices", freeL]; Return[]
-            		];
-            		If [PositiveIntegerQ[n],
-                        If [Length[freeL] > n, Message[Msg::err, "Invalid numbers of free indices: ", freeL, "", ""]; Return[]]
-            		];
-
-            		If [Head[rcExpr] === Plus, f2cTerm[#, indexL]& /@ rcExpr, f2cTerm[rcExpr, indexL]]
-            	]
-            ]
-        ]
-
-        f2cTerm[term_, indexL_] :=
-            With[{ordANDfTerm = splitForm[term]},
-            	If [ordANDfTerm[[2]] === 1, Return[term]];
-
-            	If [DegreeForm[ordANDfTerm[[2]]] =!= Length[indexL],
-                    Message[Msg::err, "invalid number of indices", indexL, "for", ordANDfTerm[[2]]]; Return[]
-                ];
-
-            	With[{rcL0 = If [Head[ordANDfTerm[[2]]] === Times, List @@ ordANDfTerm[[2]], List[ordANDfTerm[[2]]]]},  (* {A1, A2, ...} *)
-					With[{doL =
-							With[{p = DegreeForm[#1[[1,#2]]]},
-                				{ReplacePart[#1[[1]], #2 -> f2cObject[#1[[1,#2]], Take[#1[[2]], p]]],  (* update rcL0 *)
-                                 Drop[#1[[2]], p]}                                                     (* update indexL *)
-							]&},
-						With[{rcL = Fold[doL, {rcL0, indexL}, Range[Length @ rcL0]]},
-							ordANDfTerm[[1]] * (Times @@ rcL[[1]])
-						]
-					]
-            	]
-            ]
-
-            f2cObject[fName_Symbol,    indexL_] := fName[Sequence @@ indexL]       /; DiffFormQ[fName]
-            f2cObject[fName_[args___], indexL_] := fName[Sequence @@ indexL, args] /; DiffFormQ[fName]
-            f2cObject[XD[expr_],       indexL_] :=
-                With[{op = If[TorsionFreeQ[CD] && flagTable[XDtoCDfrag], CD, BD]},
-                    Length[indexL] * (TindexSort @ AntisymmetrizeIndices[op[First @ indexL, FtoC[expr, Drop[indexL, 1]]], indexL])
-                ]
-
-            f2cObject[XP[args__],      indexL_] :=
-                With[{rcL0 = {args}},
-                    With[{doL =
-                            With[{ip = DegreeForm[#1[[1,#2]]]},
-                                {ReplacePart[#1[[1]], #2 -> (1/Factorial[ip]) * FtoC[#1[[1,#2]], Take[#1[[2]], ip]]],  (* update rcL0 *)
-                                 Drop[#1[[2]], ip]}                                                                    (* update indexL *)
-                            ]&},
-                        With[{rcL = Fold[doL, {rcL0, indexL}, Range[Length @ rcL0]]},
-                            Factorial[Length @ indexL] * TindexSort @ AntisymmetrizeIndices[Times @@ rcL[[1]], indexL]
-                        ]
-                    ]
-                ]
-            f2cObject[LD[v_, f_],      {}]      := With[{pair = NewDummy[]}, v[pair[[2]]] CD[pair[[1]], f]] /; vectorNameQ[v] && ZeroDegreeQ[f]
-            f2cObject[LD[v_, expr_],   indexL_] := LD[v, FtoC[expr, indexL]] /; indexL =!= {}
-            f2cObject[IP[v_, expr_],   indexL_] :=
-                With[{pair = NewDummy[]},
-                    With[{fIndexL = Prepend[indexL, pair[[1]]]},
-                    	v[pair[[2]]] * (TindexSort @ AntisymmetrizeIndices[FtoC[expr, fIndexL], fIndexL])  (* NB: f2cObject but not "FtoC" *)
-                    ]
-                ]
-            f2cObject[HodgeStar[expr_], indexL_] :=
-                Module[{n = GetDimension[DefaultKind], p, dnL, upL, freeL},
-                    If [!PositiveIntegerQ[n], Message[Msg::err, "Need to SetDimension[]","", "", ""]; Return[HodgeStar[expr]]];
-
-                    p = DegreeForm[expr];
-                    If [Length[indexL] =!= n - p, Message[Msg::err, "invalid number of indices", indexL, "for", HodgeStar[expr]]; Return[]];
-
-                    If [p === 0,
-                        dualStarFtoC[FtoC[expr, {}], indexL],
-                    (* else *)
-                        {dnL, upL} = Transpose @ Table[NewDummy[], p];
-                        dualStarFtoC[FtoC[expr, dnL], Join[upL, indexL]]
-                    ]
-                ]
-            f2cObject[CoXD[expr_],     indexL_] :=
-                With[{pair = NewDummy[]},
-                    -CD[pair[[2]], FtoC[expr, Prepend[indexL, pair[[1]]]]]
-                ]
-            f2cObject[expr_, _, _] := expr
-
-(*****************************************************************************)
-(*****************************************************************************)
-(*****************************************************************************)
 
 (*****************************************************************************)
 (********************* CtoF by Gemini 3.1 (incomplete) ***********************)

@@ -181,12 +181,12 @@ ForEachObject::usage = "ForEachObject[expr, hOptL, f, args...] applies 'f' to ea
 SplitTerm::usage     = "SplitTerm[term, hOptL] splits a term into {scalarPart, tensorPart}, separating indexed objects defined by 'hOptL' from other factors."
 
 (****************** Operations on Indexed Expressions ***************)
-(* Find indices of indexed exprs *)
-FindIndices::usage    = "FindIndices[expr] returns a list of all indices present in 'expr'."
-FindIndicesAll::usage = "FindIndicesAll[expr] returns a list of all indices in 'expr', without checking for index validity."
+(* Find indices from a term *)
+FindIndices::usage    = "FindIndices[term] returns a list of all indices present in 'term'."
+FindIndicesAll::usage = "FindIndicesAll[term] returns a list of all indices in 'term', without checking for index validity."
 
-FindFreeTensorialIndices::usage    = "FindFreeTensorialIndices[expr] returns a list of free (uncontracted) tensorial indices in 'expr'."
-FindFreeTensorialIndicesAll::usage = "FindFreeTensorialIndicesAll[expr] returns a list of all free tensorial indices in 'expr', without checking for index validity."
+FindFreeTensorialIndices::usage    = "FindFreeTensorialIndices[term] returns a list of free (uncontracted) tensorial indices in 'term'."
+FindFreeTensorialIndicesAll::usage = "FindFreeTensorialIndicesAll[term] returns a list of all free tensorial indices in 'term', without checking for index validity."
 
 (* Utilities for indexed exprs *)
 NoIndexQ::usage = "NoIndexQ[expr] returns True if 'expr' is a scalar or contains no free tensorial indices."
@@ -333,7 +333,7 @@ ClearComponents::usage = "ClearComponents[tensor[indices]] clears the components
 Pushforward::usage     = "Pushforward[fromT, fromCoSys, toCoSys, simpCmd] computes the pushforward of a vector or tensor 'fromT' from coordinate system 'fromCoSys' to 'toCoSys'. 'simpCmd' is an optional simplification function."
 Pullback::usage        = "Pullback[fromT, fromCoSys, toCoSys, simpCmd] computes the pullback of a covector or tensor 'fromT' from coordinate system 'fromCoSys' to 'toCoSys'. 'simpCmd' is an optional simplification function."
 PushTensor::usage      = "PushTensor[updnL, fromT, fromCoSys, toCoSys, forM, forN, simpCmd] transforms the tensor 'fromT' from 'fromCoSys' to 'toCoSys'. 'updnL' specifies the variance of indices. 'forM' and 'forN' are transformation rules."
-Ttransform::usage      = "Ttransform[fromT, toT, fromCoSys, toCoSys, simpCmd] transforms the components of tensor 'fromT' in 'fromCoSys' to components of 'toT' in 'toCoSys'. 'simpCmd' is an optional simplification function."
+Ttransform::usage      = "Ttransform[leftT, rightT, leftCoSys, rightCoSys, simpCmd] transforms the components of tensors bewteen two coordinate systems. 'simpCmd' is an optional simplification function."
 
 CommutatorVectors::usage = "CommutatorVectors[vecList, kind] computes the commutator of vector fields given in 'vecList' for the manifold 'kind'. The default kind is DefaultKind."
 LineElement::usage       = "LineElement[coSys, metric, simpCmd] generates the line element 'ds^2' for a given coordinate system 'coSys' and metric matrix. 'simpCmd' is an optional simplification function."

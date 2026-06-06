@@ -632,7 +632,7 @@ printCTensor[tName_, dnupL_, posL_] :=
 
 (************************ Misc. for CTensor **************************)
 
-Geodesic[comp_Integer?Positive, simpCmd_:defaultCTensor[simpCmd]] /; mGRG`STensor`Private`flagTable[InitCTensorFlag] :=
+Geodesic[comp_Integer?Positive, simpCmd_:defaultCTensor[simpMethod]] /; mGRG`STensor`Private`flagTable[InitCTensorFlag] :=
 (* print geodesic equation *)
     Module[{rc},
         If [comp > nDimension, Message[Msg::err, comp, "is incompatible with dimension", nDimension, ""]; Return[$Failed]];
